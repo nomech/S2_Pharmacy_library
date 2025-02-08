@@ -7,9 +7,11 @@
   <link rel="stylesheet" href="/src/css/fonts.css" />
   <link rel="stylesheet" href="/src/css/reset.css" />
   <link rel="stylesheet" href="/src/css/variables.css" />
-  <link rel="stylesheet" href="/src/css/styles.css" />
-  <link rel="stylesheet" href="/src/css/form.css" />
+  <link rel="stylesheet" href="/src/css/style.css" />
   <link rel="stylesheet" href="/src/css/button.css" />
+  <link rel="stylesheet" href="/src/css/form.css" />
+  <link rel="stylesheet" href="/src/css/card.css" />
+  <link rel="stylesheet" href="/src/css/confirm.css" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vite App</title>
@@ -17,23 +19,37 @@
 
 <body>
   <header>
-    <h1>NoMech Pharmaceuticals Admin Panel</h1>
+    <h1 class="title">NoMech Pharmaceuticals Admin Panel</h1>
   </header>
   <main>
-    <h1 class="title"></h1>
     <section class="panel">
       <h2 class="panel__title">Admin Panel</h2>
       <!-- Add will reveal form modal -->
-      <button class="button button--add">Add New</button>
+      <button class="button button--add"><img src="./src/assets/icons/add.svg">Add New</button>
     </section>
 
     <section class="data">
       <!-- Data will be populated here -->
+      <div class="data__card card">
+        <div class="card__data-group">
+          <div class="card__header">
+            <h3 class="card__title">Product Name</h3>
+          </div>
+          <div class="card__footer">
+            <p class="card__manufacturer">Manufacturer | Expiry Date | Quantity</p>
+          </div>
+        </div>
+        <div class="card__button-group">
+          <button class="button button--edit button--card"><img src="./src/assets/icons/edit.svg">Edit</button>
+          <button class="button button--delete button--card"><img src="./src/assets/icons/delete.svg">Delete</button>
+        </div>
+
+      </div>
     </section>
   </main>
   <footer></footer>
   <!-- Modals -->
-  <div class="form__modal">
+  <div class="form-modal">
     <div class="form__modal-content">
       <div class="form__modal-header">
         <h3>Add product</h3>
@@ -57,11 +73,24 @@
           <input class="form__input" type="number" id="quantity" name="quantity" />
         </div>
         <div class="form__group">
-          <button class="button button--add">Add</button>
-          <button class="button button--cancel">Cancel</button>
+          <button class="button button--add button--form"> <img src="./src/assets/icons/add.svg" alt="">Add</button>
+          <button class="button button--cancel button--form"><img src="./src/assets/icons/exit.svg"
+              alt="">Cancel</button>
         </div>
       </form>
     </div>
+  </div>
+  <div class="confirm-modal confirm-modal--delete">
+    <div class="confirm__content">
+      <h3>Are you sure you want to delete this product?</h3>
+      <div class="confirm__button-group">
+        <button class="button button--delete button--confirm"><img src="./src/assets/icons/delete.svg"
+            alt="">Delete</button>
+        <button class="button button--add button--confirm"> <img src="./src/assets/icons/exit.svg"
+            alt="">Cancel</button>
+      </div>
+    </div>
+
   </div>
   <!--script type="module" src="/src/main.js"></script-->
 </body>

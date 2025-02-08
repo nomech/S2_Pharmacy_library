@@ -1,6 +1,18 @@
 .button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
   padding: var(--xsmall);
-  border: none; 
+  border-radius: 8px;
+  width: 120px;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.button--form {
+  width: unset;
+  border-radius: unset;
 }
 
 .button:hover {
@@ -11,16 +23,59 @@
   background-color: var(--button-primary);
   color: var(--text-primary);
 }
+
 .button--add:hover {
   background-color: var(--button-primary-hover);
+}
+
+.button--add:active {
+  background-color: var(--button-primary);
 }
 
 .button--cancel:hover {
   background-color: var(--button-secondary-hover);
 }
 
+.button--cancel:active {
+  background-color: var(--button-secondary);
+}
 
 .button--cancel {
   background-color: var(--button-secondary);
   color: var(--text-primary);
+}
+
+.button--card {
+  width: 64px;
+}
+.button--delete {
+  background-color: var(--button-delete);
+  color: var(--text-primary);
+  padding: 0 var(--large);
+}
+
+.button--delete:hover {
+  background-color: var(--button-delete-hover);
+}
+
+.button--delete:active {
+  background-color: var(--button-delete);
+}
+
+.button--edit {
+  background-color: var(--button-edit);
+  color: var(--text-secondary);
+}
+
+.button--edit:hover {
+  background-color: var(--button-edit-hover);
+}
+
+.button--edit:active {
+  background-color: var(--button-edit);
+}
+
+.button img {
+  width: 16px;
+  height: 16px;
 }

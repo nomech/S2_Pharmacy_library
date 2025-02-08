@@ -1,0 +1,14 @@
+.card {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  padding: var(--small);
+  background-color: var(--secondary-background);
+  border-radius: 8px;
+  width: 100%;
+}
+
+.card__button-group {
+  display: flex;
+  gap: var(--xsmall);
+}

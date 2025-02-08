@@ -7,8 +7,16 @@
   --button-primary: #007bff;
   --button-primary-hover: #4d9bee;
 
+  
   --button-secondary: #ff735e;
   --button-secondary-hover: #f48b7b;
+
+  --button-edit: #ffffff;
+  --button-edit-hover: #efeded;
+
+  --button-delete: #dc3545;
+  --button-delete-hover: #e4606d;
+
 
   --text-primary: #ffffff;
   --text-secondary: #000000;
