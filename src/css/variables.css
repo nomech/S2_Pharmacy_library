@@ -1,0 +1,25 @@
+:root {
+  /* Colors */
+  --primary-background: #ffffff;
+  --secondary-background: #f7f7f7;
+  --border: #dcdcdc;
+
+  --button-primary: #007bff;
+  --button-primary-hover: #4d9bee;
+
+  --button-secondary: #ff735e;
+  --button-secondary-hover: #f48b7b;
+
+  --text-primary: #ffffff;
+  --text-secondary: #000000;
+
+  /* Fonts */
+  --font-roboto: "Roboto", sans-serif;
+
+  /* Sizes */
+  --xsmall: 0.5rem;
+  --small: 1rem;
+  --medium: 2rem;
+  --large: 3rem;
+  --xlarge: 4rem;
+}

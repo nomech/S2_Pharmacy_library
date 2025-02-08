@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link rel="stylesheet" href="/src/css/fonts.css" />
+  <link rel="stylesheet" href="/src/css/reset.css" />
+  <link rel="stylesheet" href="/src/css/variables.css" />
+  <link rel="stylesheet" href="/src/css/styles.css" />
+  <link rel="stylesheet" href="/src/css/form.css" />
+  <link rel="stylesheet" href="/src/css/button.css" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite App</title>
+</head>
+
+<body>
+  <header>
+    <h1>NoMech Pharmaceuticals Admin Panel</h1>
+  </header>
+  <main>
+    <h1 class="title"></h1>
+    <section class="panel">
+      <h2 class="panel__title">Admin Panel</h2>
+      <!-- Add will reveal form modal -->
+      <button class="button button--add">Add New</button>
+    </section>
+
+    <section class="data">
+      <!-- Data will be populated here -->
+    </section>
+  </main>
+  <footer></footer>
+  <!-- Modals -->
+  <div class="form__modal">
+    <div class="form__modal-content">
+      <div class="form__modal-header">
+        <h3>Add product</h3>
+        <p>Please make sure the information entered is correct!</p>
+      </div>
+      <form action="" class="form">
+        <div class="form__group">
+          <label class="form__label" for="name">Product name</label>
+          <input class="form__input" type="text" id="name" name="name" />
+        </div>
+        <div class="form__group">
+          <label class="form__label" for="manufacturer">Manufacturer</label>
+          <input class="form__input" type="text" id="manufacturer" name="manufacturer" />
+        </div>
+        <div class="form__group">
+          <label class="form__label" for="expiry">Expiry Date</label>
+          <input class="form__input" type="date" id="expiry" name="expiry" />
+        </div>
+        <div class="form__group">
+          <label class="form__label" for="quantity">Quantity</label>
+          <input class="form__input" type="number" id="quantity" name="quantity" />
+        </div>
+        <div class="form__group">
+          <button class="button button--add">Add</button>
+          <button class="button button--cancel">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!--script type="module" src="/src/main.js"></script-->
+</body>
+
+</html>

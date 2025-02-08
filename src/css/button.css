@@ -1,0 +1,26 @@
+.button {
+  padding: var(--xsmall);
+  border: none; 
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.button--add {
+  background-color: var(--button-primary);
+  color: var(--text-primary);
+}
+.button--add:hover {
+  background-color: var(--button-primary-hover);
+}
+
+.button--cancel:hover {
+  background-color: var(--button-secondary-hover);
+}
+
+
+.button--cancel {
+  background-color: var(--button-secondary);
+  color: var(--text-primary);
+}
