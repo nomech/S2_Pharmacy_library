@@ -54,3 +54,8 @@
   box-shadow: none;
   gap: var(--small);
 }
+
+.form__group--prescription,
+.form__group--otc {
+  display: none;
+}

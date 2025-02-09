@@ -3,7 +3,6 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <link rel="stylesheet" href="/src/css/fonts.css" />
   <link rel="stylesheet" href="/src/css/reset.css" />
   <link rel="stylesheet" href="/src/css/variables.css" />
@@ -14,7 +13,7 @@
   <link rel="stylesheet" href="/src/css/confirm.css" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vite App</title>
+  <title>NoMech Pharmaceuticals</title>
 </head>
 
 <body>
@@ -73,6 +72,34 @@
           <input class="form__input" type="number" id="quantity" name="quantity" />
         </div>
         <div class="form__group">
+          <label class="form__label" for="type">Type</label>
+          <select class="form__input form__input--type" name="type" id="type">
+            <option value="none">Select type</option>
+            <option value="prescription">Prescription</option>
+            <option value="otc">Over the counter</option>
+          </select>
+        </div>
+
+        <!-- Prescription form section -->
+        <div class="form__group form__group--prescription">
+          <label class="form__label" for="dosage">Dosage</label>
+          <input class="form__input form__input--dosage" type="text" name="dosage" id="dosage" />
+
+          <label class="form__label" for="frequency">Frequency</label>
+          <input class="form__input form__input--frequency" type="text" name="frequency" id="frequency" />
+        </div>
+
+        <!-- OTC form section -->
+        <div class="form__group form__group--otc">
+          <label class="form__label" for="age">Age restriction</label>
+          <input class="form__input form__input--age" type="number" name="age" id="age" />
+
+          <label class="form__label" for="price">Price</label>
+          <input class="form__input form__input--price" type="number" name="Price" id="Price" />
+        </div>
+
+        <!-- Buttons -->
+        <div class="form__group">
           <button class="button button--add button--form"> <img src="./src/assets/icons/add.svg" alt="">Add</button>
           <button class="button button--cancel button--form"><img src="./src/assets/icons/exit.svg"
               alt="">Cancel</button>
@@ -84,10 +111,10 @@
     <div class="delete-modal__content">
       <h3>Are you sure you want to delete this product?</h3>
       <div class="delete-modal__button-group">
-        <button class="delete-modal__button--delete button button--delete button--confirm"><img src="./src/assets/icons/delete.svg"
-            alt="">Delete</button>
-        <button class="delete-modal__button--cancel button button--cancel button--confirm"> <img src="./src/assets/icons/exit.svg"
-            alt="">Cancel</button>
+        <button class="delete-modal__button--delete button button--delete button--confirm"><img
+            src="./src/assets/icons/delete.svg" alt="">Delete</button>
+        <button class="delete-modal__button--cancel button button--cancel button--confirm"> <img
+            src="./src/assets/icons/exit.svg" alt="">Cancel</button>
       </div>
     </div>
 
