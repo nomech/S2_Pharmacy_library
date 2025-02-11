@@ -7,3 +7,5 @@ class OTC extends Pharmaceuticals {
     this.price = price;
   }
 }
+
+export default OTC;
