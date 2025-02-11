@@ -1,3 +1,5 @@
+import ClientController from "./clientController";
+
 class Ui {
   // mothod to open modal
   static openModal(button, modal) {
@@ -52,6 +54,13 @@ class Ui {
 
     dataContainer.innerHTML = "";
 
+    if (!all.length > 0) {
+      const noProduct = document.createElement("p")
+      noProduct.className = "data__no-data"
+      noProduct.innerHTML="There are no products added yet"
+      dataContainer.append(noProduct)
+    }
+
     all.forEach((product) => {
       const card = document.createElement("div");
       const cardDataGroup = document.createElement("div");
@@ -92,6 +101,11 @@ class Ui {
       cardButtons.append(editButton, deleteButton);
       card.append(cardDataGroup, cardButtons);
       dataContainer.append(card);
+
+      deleteButton.addEventListener("click", () => {
+        ClientController.deleteProducts(product.id);
+        Ui.renderData();
+      });
     });
   }
 }

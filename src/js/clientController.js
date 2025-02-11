@@ -74,8 +74,29 @@ class ClientController {
     );
   }
 
-  static saveProducts() {
-    localStorage.setItem("products", JSON.stringify(this.products));
+  static saveProducts(products) {
+    localStorage.setItem("products", JSON.stringify(products));
+  }
+
+  static deleteProducts(id) {
+    console.log(id);
+    console.log(ClientController.products);
+    ClientController.products.all = ClientController.products.all.filter(
+      (product) => {
+        return product.id !== id;
+      }
+    );
+    ClientController.products.otc = ClientController.products.otc.filter(
+      (product) => {
+        return product.id !== id;
+      }
+    );
+    ClientController.products.prescription =
+      ClientController.products.prescription.filter((product) => {
+        return product.id !== id;
+      });
+
+    this.saveProducts(ClientController.products);
   }
 }
 
