@@ -20,12 +20,11 @@ const dosage = document.querySelector(".form__input--dosage");
 const frequency = document.querySelector(".form__input--frequency");
 const price = document.querySelector(".form__input--price");
 const age = document.querySelector(".form__input--age");
-
 const typeField = document.querySelector(".form__input--type");
-
 const prescriptionSection = document.querySelector(
   ".form__group--prescription"
 );
+
 const prescriptionFields = [
   document.querySelector(".form__input--dosage"),
   document.querySelector(".form__input--frequency"),
@@ -37,12 +36,12 @@ const otcFields = [
   document.querySelector(".form__input--age"),
 ];
 
-const submitButton = document.querySelector(".button--submit");
-
 document.addEventListener("DOMContentLoaded", () => {
+  Ui.renderData();
   Ui.openModal(showButton, formModal);
-  Ui.openModal(deleteButton, deleteModal, deleteCancelButton);
+  Ui.openModal(deleteButton, deleteModal);
   Ui.closeModal(cancelButton, formModal);
+  Ui.closeModal(deleteCancelButton, deleteModal);
 
   typeField.addEventListener("change", () => {
     Ui.toggleMedicineSection(
@@ -50,30 +49,26 @@ document.addEventListener("DOMContentLoaded", () => {
       prescriptionFields,
       otcSection,
       otcFields,
-      typeFiled
+      typeField
     );
   });
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-
-    console.log(typeField.value);
-
     ClientController.addProduct(
       name.value.trim(),
       manufacturer.value.trim(),
       expiryDate.value.trim(),
       quantity.value.trim(),
       typeField.value.trim(),
-      price.value.trim(),
       age.value.trim(),
+      price.value.trim(),
       dosage.value.trim(),
       frequency.value.trim()
     );
-   
-
     if (typeField.value !== "none") {
-      Ui.closeModal(submitButton, formModal);
+      Ui.closeOnSubmit(formModal);
+      Ui.renderData();
     }
   });
 });
