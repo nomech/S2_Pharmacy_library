@@ -3,15 +3,56 @@ import ClientController from "./clientController";
 class Ui {
   // mothod to open modal
   static openModal(button, modal) {
+    const inputFields = document.querySelectorAll(".form__input");
     // add event listener to button to open modal
+    //on key down event
+
+    const form = document.querySelector(".form");
+    form.dataset.mode = "add";
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        modal.style.display = "none";
+      }
+    });
+
     button.addEventListener("click", () => {
       modal.style.display = "flex";
+      inputFields.forEach((input) => {
+        input.value = "";
+      });
+    });
+  }
+
+  static currentId = null;
+
+  static openEditModal(modal, product) {
+    const form = document.querySelector(".form");
+    form.dataset.mode = "edit";
+    Ui.currentProductId = product.id;
+
+    const inputFields = document.querySelectorAll(".form__input");
+
+    // add event listener to button to open modal
+    modal.style.display = "flex";
+
+    inputFields.forEach((input) => {
+      Object.keys(product).forEach((key) => {
+        if (key === input.name) {
+          input.value = product[key];
+        }
+      });
     });
   }
 
   static closeModal(button, modal) {
-    button.addEventListener("click", () => {
+    const submitEdit = document.querySelector(".button--submit-edit");
+    const submitAdd = document.querySelector(".button--submit");
+
+    button.addEventListener("click", (e) => {
+      e.preventDefault();
       modal.style.display = "none";
+      submitEdit.style.display = "none";
+      submitAdd.style.display = "block";
     });
   }
 
@@ -49,19 +90,19 @@ class Ui {
     const data =
       JSON.parse(localStorage.getItem("products")) ||
       "There is currently no products";
-    const all = data.all;
+    const allProducts = data.all ? [...data.all] : [];
     const dataContainer = document.querySelector(".data");
 
     dataContainer.innerHTML = "";
 
-    if (!all.length > 0) {
-      const noProduct = document.createElement("p")
-      noProduct.className = "data__no-data"
-      noProduct.innerHTML="There are no products added yet"
-      dataContainer.append(noProduct)
+    if (!allProducts.length > 0) {
+      const noProduct = document.createElement("p");
+      noProduct.className = "data__no-data";
+      noProduct.innerHTML = "There are no products added yet";
+      dataContainer.append(noProduct);
     }
 
-    all.forEach((product) => {
+    allProducts.forEach((product) => {
       const card = document.createElement("div");
       const cardDataGroup = document.createElement("div");
       const cardheader = document.createElement("div");
@@ -73,6 +114,9 @@ class Ui {
       const editImg = document.createElement("img");
       const deleteButton = document.createElement("button");
       const deleteImg = document.createElement("img");
+      const formModal = document.querySelector(".form-modal");
+      const submitEdit = document.querySelector(".button--submit-edit");
+      const submitAdd = document.querySelector(".button--submit");
 
       card.className = "data__card card";
       cardDataGroup.className = "card__data-group";
@@ -87,7 +131,7 @@ class Ui {
       deleteImg.className = "button__image on__image--delete";
 
       cardTitle.innerText = `${product.name}`;
-      cardText.innerText = `${product.manufacturer} | ${product.expiryDate} | Qty. ${product.quantity}`;
+      cardText.innerText = `Mfr. ${product.manufacturer} | Exp. ${product.expiryDate} | Qty. ${product.quantity}`;
 
       editImg.src = `./src/assets/icons/edit.svg`;
       deleteImg.src = `./src/assets/icons/delete.svg`;
@@ -101,6 +145,12 @@ class Ui {
       cardButtons.append(editButton, deleteButton);
       card.append(cardDataGroup, cardButtons);
       dataContainer.append(card);
+
+      editButton.addEventListener("click", (e) => {
+        Ui.openEditModal(formModal, product);
+        submitEdit.style.display = "block";
+        submitAdd.style.display = "none";
+      });
 
       deleteButton.addEventListener("click", () => {
         ClientController.deleteProducts(product.id);

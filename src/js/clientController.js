@@ -8,38 +8,28 @@ class ClientController {
     prescription: [],
   };
 
-  static addProduct(
-    name,
-    manufacturer,
-    expiryDate,
-    quantity,
-    type,
-    age,
-    price,
-    dosage,
-    frequency
-  ) {
-    if (type === "otc") {
+  static addProduct(product) {
+    if (product.type === "otc") {
       this.product = this.addOTC(
-        name,
-        manufacturer,
-        expiryDate,
-        quantity,
-        type,
-        age,
-        price
+        product.name,
+        product.manufacturer,
+        product.expiryDate,
+        product.quantity,
+        product.type,
+        product.age,
+        product.price
       );
       ClientController.products.otc.push(this.product);
       ClientController.products.all.push(this.product);
-    } else if (type === "prescription") {
+    } else if (product.type === "prescription") {
       this.product = this.addPrescription(
-        name,
-        manufacturer,
-        expiryDate,
-        quantity,
-        type,
-        dosage,
-        frequency
+        product.name,
+        product.manufacturer,
+        product.expiryDate,
+        product.quantity,
+        product.type,
+        product.dosage,
+        product.frequency
       );
       ClientController.products.prescription.push(this.product);
       ClientController.products.all.push(this.product);
@@ -79,8 +69,6 @@ class ClientController {
   }
 
   static deleteProducts(id) {
-    console.log(id);
-    console.log(ClientController.products);
     ClientController.products.all = ClientController.products.all.filter(
       (product) => {
         return product.id !== id;
@@ -95,6 +83,23 @@ class ClientController {
       ClientController.products.prescription.filter((product) => {
         return product.id !== id;
       });
+
+    this.saveProducts(ClientController.products);
+  }
+
+  static editProduct(editedProduct) {
+    const index = ClientController.products.all.findIndex(
+      (product) => product.id === editedProduct.id
+    );
+
+    if (index !== -1) {
+      const editedType = editedProduct.type;
+      let currentType = ClientController.products.all[index].type;
+
+      ClientController.products.all[index] = editedProduct;
+    } else {
+      console.log("Product not found");
+    }
 
     this.saveProducts(ClientController.products);
   }

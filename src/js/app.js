@@ -39,8 +39,9 @@ const otcFields = [
 document.addEventListener("DOMContentLoaded", () => {
   Ui.renderData();
   Ui.openModal(showButton, formModal);
-  Ui.openModal(deleteButton, deleteModal);
   Ui.closeModal(cancelButton, formModal);
+
+  Ui.openModal(deleteButton, deleteModal);
   Ui.closeModal(deleteCancelButton, deleteModal);
 
   typeField.addEventListener("change", () => {
@@ -55,17 +56,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    ClientController.addProduct(
-      name.value.trim(),
-      manufacturer.value.trim(),
-      expiryDate.value.trim(),
-      quantity.value.trim(),
-      typeField.value.trim(),
-      age.value.trim(),
-      price.value.trim(),
-      dosage.value.trim(),
-      frequency.value.trim()
-    );
+    let product = null;
+    if (form.dataset.mode === "add") {
+      product = {
+        name: name.value.trim(),
+        manufacturer: manufacturer.value.trim(),
+        expiryDate: expiryDate.value.trim(),
+        quantity: quantity.value.trim(),
+        type: typeField.value.trim(),
+        age: age.value.trim(),
+        price: price.value.trim(),
+        dosage: dosage.value.trim(),
+        frequency: frequency.value.trim(),
+      };
+      ClientController.addProduct(product);
+    } else if (form.dataset.mode === "edit") {
+      product = {
+        id: Ui.currentProductId,
+        name: name.value.trim(),
+        manufacturer: manufacturer.value.trim(),
+        expiryDate: expiryDate.value.trim(),
+        quantity: quantity.value.trim(),
+        type: typeField.value.trim(),
+        age: age.value.trim(),
+        price: price.value.trim(),
+        dosage: dosage.value.trim(),
+        frequency: frequency.value.trim(),
+      };
+
+      ClientController.editProduct(product);
+    } else {
+      console.log("Invalid mode");
+    }
+
     if (typeField.value !== "none") {
       Ui.closeOnSubmit(formModal);
       Ui.renderData();
