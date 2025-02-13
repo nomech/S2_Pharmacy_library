@@ -7,12 +7,12 @@ class Prescription extends Pharmaceuticals {
     expiryDate,
     quantity,
     type,
-    doseage,
-    frequancy
+    doesage,
+    frequency
   ) {
-    super(name, manufacturer, expiryDate, quantity, type, doseage, frequancy);
-    this.doseage = doseage;
-    this.frequancy = frequancy;
+    super(name, manufacturer, expiryDate, quantity, type, doesage, frequency);
+    this.doesage = doesage;
+    this.frequancy = frequency;
   }
 }
 

@@ -1,6 +1,5 @@
 import Ui from "./ui";
 import ClientController from "./clientController";
-import { validate } from "uuid";
 
 const showButton = document.querySelector(".button--show-form");
 const formModal = document.querySelector(".form-modal");
@@ -138,14 +137,16 @@ document.addEventListener("DOMContentLoaded", () => {
       frequency: frequency.value.trim(),
     };
 
-    if (formValidator(product)) {
+    console.log(price.value.trim());
+
+    if (formValidator()) {
       if (form.dataset.mode === "add") {
-        product = ClientController.addProduct(product);
+        ClientController.addProduct(product);
       } else if (form.dataset.mode === "edit") {
         product.id = Ui.currentProductId;
         ClientController.editProduct(product);
       } else {
-        console.log("Invalid mode");
+        console.error("Invalid mode");
         return;
       }
       Ui.closeOnSubmit(formModal, prescriptionSection, otcSection);

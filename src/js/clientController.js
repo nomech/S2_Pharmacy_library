@@ -51,7 +51,8 @@ class ClientController {
     quantity,
     type,
     dosage,
-    frequency
+    frequency,
+    price
   ) {
     return new Prescription(
       name,
@@ -60,7 +61,8 @@ class ClientController {
       quantity,
       type,
       dosage,
-      frequency
+      frequency,
+      price
     );
   }
 

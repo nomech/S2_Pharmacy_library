@@ -32,19 +32,34 @@ class Ui {
   static currentId = null;
 
   static openEditModal(modal, product) {
+    const prescriptionSection = document.querySelector(
+      ".form__group--prescription"
+    );
+    const otcSection = document.querySelector(".form__group--otc");
     const form = document.querySelector(".form");
     form.dataset.mode = "edit";
     Ui.currentProductId = product.id;
 
     const inputFields = document.querySelectorAll(".form__input");
-
     modal.style.display = "flex";
 
+    console.log(product);
+    console.log(inputFields);
     inputFields.forEach((input) => {
       Object.keys(product).forEach((key) => {
         if (key === input.name) {
+          console.log(product[key]);
           input.value = product[key];
         }
+        if (key === "type")
+          if (product[key] === "prescription") {
+            prescriptionSection.style.display = "inherit";
+          } else if (product[key] === "otc") {
+            otcSection.style.display = "inherit";
+          } else {
+            prescriptionSection.style.display = "none";
+            otcSection.style.display = "none";
+          }
       });
     });
   }
