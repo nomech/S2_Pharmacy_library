@@ -36,13 +36,83 @@ const otcFields = [
   document.querySelector(".form__input--age"),
 ];
 
+const formValidator = () => {
+  let isValid = true;
+  for (let input of form) {
+    if (input.name === "name") {
+      if (input.value === "") {
+        input.placeholder = "Name is required";
+        isValid = false;
+      }
+    }
+
+    if (input.name === "manufacturer") {
+      if (input.value === "") {
+        input.placeholder = "Manufacturer is required";
+        isValid = false;
+      }
+    }
+
+    if (input.name === "expiry") {
+      if (input.value === "") {
+        input.placeholder = "Expiry Date is required";
+        isValid = false;
+      }
+    }
+    if (input.name === "quantity") {
+      if (input.value === "") {
+        input.placeholder = "Quantity is required";
+        isValid = false;
+      }
+    }
+
+    if (input.name === "type") {
+      console.log(input.value);
+      if (input.value === "otc") {
+        if (input.name === "price") {
+          if (input.value === "") {
+            input.placeholder = "Price is required";
+            isValid = false;
+          }
+        }
+
+        if (input.name === "age") {
+          if (input.value === "") {
+            input.placeholder = "Age is required";
+            isValid = false;
+          }
+        }
+      } else if (input.value === "prescription") {
+        if (input.name === "dosage") {
+          if (input.value === "") {
+            input.placeholder = "Dosage is required";
+            isValid = false;
+          }
+        }
+        if (input.name === "frequency") {
+          if (input.value === "") {
+            input.placeholder = "Frequency is required";
+            isValid = false;
+          } 
+        }
+      }
+    }
+  }
+  return isValid;
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   Ui.renderData();
   Ui.openModal(showButton, formModal);
-  Ui.closeModal(cancelButton, formModal);
+  Ui.closeModal(cancelButton, formModal, prescriptionSection, otcSection);
 
   Ui.openModal(deleteButton, deleteModal);
-  Ui.closeModal(deleteCancelButton, deleteModal);
+  Ui.closeModal(
+    deleteCancelButton,
+    deleteModal,
+    prescriptionSection,
+    prescriptionFields
+  );
 
   typeField.addEventListener("change", () => {
     Ui.toggleMedicineSection(
@@ -57,40 +127,40 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     let product = null;
-    if (form.dataset.mode === "add") {
-      product = {
-        name: name.value.trim(),
-        manufacturer: manufacturer.value.trim(),
-        expiryDate: expiryDate.value.trim(),
-        quantity: quantity.value.trim(),
-        type: typeField.value.trim(),
-        age: age.value.trim(),
-        price: price.value.trim(),
-        dosage: dosage.value.trim(),
-        frequency: frequency.value.trim(),
-      };
-      ClientController.addProduct(product);
-    } else if (form.dataset.mode === "edit") {
-      product = {
-        id: Ui.currentProductId,
-        name: name.value.trim(),
-        manufacturer: manufacturer.value.trim(),
-        expiryDate: expiryDate.value.trim(),
-        quantity: quantity.value.trim(),
-        type: typeField.value.trim(),
-        age: age.value.trim(),
-        price: price.value.trim(),
-        dosage: dosage.value.trim(),
-        frequency: frequency.value.trim(),
-      };
+    if (formValidator()) {
+      if (form.dataset.mode === "add") {
+        product = {
+          name: name.value.trim(),
+          manufacturer: manufacturer.value.trim(),
+          expiryDate: expiryDate.value.trim(),
+          quantity: quantity.value.trim(),
+          type: typeField.value.trim(),
+          age: age.value.trim(),
+          price: price.value.trim(),
+          dosage: dosage.value.trim(),
+          frequency: frequency.value.trim(),
+        };
+        ClientController.addProduct(product);
+      } else if (form.dataset.mode === "edit") {
+        product = {
+          id: Ui.currentProductId,
+          name: name.value.trim(),
+          manufacturer: manufacturer.value.trim(),
+          expiryDate: expiryDate.value.trim(),
+          quantity: quantity.value.trim(),
+          type: typeField.value.trim(),
+          age: age.value.trim(),
+          price: price.value.trim(),
+          dosage: dosage.value.trim(),
+          frequency: frequency.value.trim(),
+        };
 
-      ClientController.editProduct(product);
-    } else {
-      console.log("Invalid mode");
-    }
-
-    if (typeField.value !== "none") {
-      Ui.closeOnSubmit(formModal);
+        ClientController.editProduct(product);
+      } else {
+        console.log("Invalid mode");
+        return;
+      }
+      Ui.closeOnSubmit(formModal, prescriptionSection, otcSection);
       Ui.renderData();
     }
   });

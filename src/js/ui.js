@@ -4,11 +4,10 @@ class Ui {
   // mothod to open modal
   static openModal(button, modal) {
     const inputFields = document.querySelectorAll(".form__input");
-    // add event listener to button to open modal
-    //on key down event
-
     const form = document.querySelector(".form");
+
     form.dataset.mode = "add";
+    
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         modal.style.display = "none";
@@ -18,7 +17,10 @@ class Ui {
     button.addEventListener("click", () => {
       modal.style.display = "flex";
       inputFields.forEach((input) => {
-        input.value = "";
+        if (input.name !== "type") {
+          input.value = "";
+          input.placeholder = "";
+        }
       });
     });
   }
@@ -44,7 +46,7 @@ class Ui {
     });
   }
 
-  static closeModal(button, modal) {
+  static closeModal(button, modal, prescriptionSection, otcSection) {
     const submitEdit = document.querySelector(".button--submit-edit");
     const submitAdd = document.querySelector(".button--submit");
 
@@ -53,11 +55,17 @@ class Ui {
       modal.style.display = "none";
       submitEdit.style.display = "none";
       submitAdd.style.display = "block";
+      if (prescriptionSection && otcSection) {
+        prescriptionSection.style.display = "none";
+        otcSection.style.display = "none";
+      }
     });
   }
 
-  static closeOnSubmit(modal) {
+  static closeOnSubmit(modal, prescriptionSection, otcSection) {
     modal.style.display = "none";
+    prescriptionSection.style.display = "none";
+    otcSection.style.display = "none";
   }
 
   static toggleMedicineSection(
