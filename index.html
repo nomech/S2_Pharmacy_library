@@ -38,7 +38,7 @@
     <div class="form__modal-content">
       <div class="form__modal-header">
         <h3>Add product</h3>
-        <p>Please make sure the information entered is correct!</p>
+        <p>Please make sure to enter the correct information in every field!</p>
       </div>
       <form action="" class="form">
         <div class="form__group">
@@ -64,30 +64,33 @@
             <option value="prescription">Prescription</option>
             <option value="otc">Over the counter</option>
           </select>
+          <p class="form__error form__error--select">You need to select a type</p>
         </div>
 
         <!-- Prescription form section -->
         <div class="form__group form__group--prescription">
           <label class="form__label" for="dosage">Dosage</label>
-          <input class="form__input form__input--dosage" type="text" name="dosage" id="dosage" />
+          <input class="form__input form__input--dosage" type="text" name="dosage" id="dosage"
+            data-type="prescription" />
 
           <label class="form__label" for="frequency">Frequency</label>
-          <input class="form__input form__input--frequency" type="text" name="frequency" id="frequency" />
+          <input class="form__input form__input--frequency" type="text" name="frequency" id="frequency"
+            data-type="prescription" />
         </div>
 
         <!-- OTC form section -->
         <div class="form__group form__group--otc">
           <label class="form__label" for="age">Age restriction</label>
-          <input class="form__input form__input--age" type="number" name="age" id="age" />
+          <input class="form__input form__input--age" type="number" name="age" id="age" data-type="otc" />
 
           <label class="form__label" for="price">Price</label>
-          <input class="form__input form__input--price" type="number" name="Price" id="Price" />
+          <input class="form__input form__input--price" type="number" name="price" id="Price" data-type="otc" />
         </div>
 
         <!-- Buttons -->
         <div class="form__group">
           <button class="button button button--form button--submit-edit"> <img src="./src/assets/icons/add.svg"
-            alt="">Edit</button>
+              alt="">Edit</button>
 
           <button class="button button--add button--form button--submit"> <img src="./src/assets/icons/add.svg"
               alt="">Add</button>

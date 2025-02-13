@@ -5,9 +5,9 @@ class Ui {
   static openModal(button, modal) {
     const inputFields = document.querySelectorAll(".form__input");
     const form = document.querySelector(".form");
-
+    const formErrorSelect = document.querySelector(".form__error--select");
     form.dataset.mode = "add";
-    
+
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         modal.style.display = "none";
@@ -16,10 +16,14 @@ class Ui {
 
     button.addEventListener("click", () => {
       modal.style.display = "flex";
+      formErrorSelect.style.visibility = "hidden";
+
       inputFields.forEach((input) => {
         if (input.name !== "type") {
           input.value = "";
           input.placeholder = "";
+        } else {
+          input.value = "none";
         }
       });
     });
@@ -34,7 +38,6 @@ class Ui {
 
     const inputFields = document.querySelectorAll(".form__input");
 
-    // add event listener to button to open modal
     modal.style.display = "flex";
 
     inputFields.forEach((input) => {

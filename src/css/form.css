@@ -65,3 +65,11 @@
 .form__group--otc {
   display: none;
 }
+
+.form__error {
+  visibility: hidden;
+  margin-top: 4px;
+  grid-column: 2;
+  color: rgba(255, 0, 0, 0.75);
+  font-style: italic;
+}
