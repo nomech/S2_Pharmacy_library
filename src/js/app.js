@@ -101,7 +101,7 @@ const formValidator = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  Ui.renderData();
+  Ui.renderData("all");
   Ui.openModal(showButton, formModal);
   Ui.closeModal(cancelButton, formModal, prescriptionSection, otcSection);
 
