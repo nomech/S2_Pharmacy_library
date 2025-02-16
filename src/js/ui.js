@@ -112,18 +112,23 @@ class Ui {
     }
   }
 
-  //function that creates elements to be rendered
-  static createElements(data) {
+  static renderData() {
+    const data =
+      JSON.parse(localStorage.getItem("products")) ||
+      "There is currently no products";
+    const allProducts = data.all ? [...data.all] : [];
     const dataContainer = document.querySelector(".data");
+
     dataContainer.innerHTML = "";
-    if (!data.length > 0) {
+
+    if (!allProducts.length > 0) {
       const noProduct = document.createElement("p");
       noProduct.className = "data__no-data";
       noProduct.innerHTML = "There are no products added yet";
       dataContainer.append(noProduct);
     }
 
-    data.forEach((product) => {
+    allProducts.forEach((product) => {
       const card = document.createElement("div");
       const cardDataGroup = document.createElement("div");
       const cardheader = document.createElement("div");
@@ -178,26 +183,6 @@ class Ui {
         Ui.renderData();
       });
     });
-  }
-
-  // renders data
-  static renderData(type) {
-    const data =
-      JSON.parse(localStorage.getItem("products")) ||
-      "There is currently no products";
-
-    if (type === "all") {
-      const allData = data.all ? [...data.all] : [];
-      this.createElements(allData);
-    } else if (type === "otc") {
-      const otcData = data.otc ? [...data.otc] : [];
-      this.createElements(otcData);
-    } else if (type === "prescription") {
-      const prescriptionData = data.otc ? [...data.prescription] : [];
-      this.createElements(prescriptionData);
-    } else {
-      console.log("Invalid type");
-    }
   }
 }
 
