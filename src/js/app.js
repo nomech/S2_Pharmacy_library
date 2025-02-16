@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
       Ui.closeOnSubmit(formModal, prescriptionSection, otcSection);
-      Ui.renderData();
+      Ui.renderData(Ui.currentTab);
     }
   });
 });
