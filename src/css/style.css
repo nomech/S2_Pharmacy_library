@@ -20,11 +20,15 @@ main {
   gap: var(--xsmall);
 }
 
+.data-section {
+  width: 100%;
+}
+
 .data {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
-  gap: var(--small)
+  gap: var(--small);
 }

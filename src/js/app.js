@@ -12,6 +12,8 @@ const deleteCancelButton = document.querySelector(
   ".delete-modal__button--cancel"
 );
 
+const tabs = document.querySelectorAll(".tab");
+
 const name = document.querySelector(".form__input--name");
 const manufacturer = document.querySelector(".form__input--manufacturer");
 const expiryDate = document.querySelector(".form__input--expire");
@@ -101,10 +103,9 @@ const formValidator = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  Ui.renderData();
+  Ui.renderData("all");
   Ui.openModal(showButton, formModal);
   Ui.closeModal(cancelButton, formModal, prescriptionSection, otcSection);
-
   Ui.openModal(deleteButton, deleteModal);
   Ui.closeModal(
     deleteCancelButton,
@@ -112,6 +113,8 @@ document.addEventListener("DOMContentLoaded", () => {
     prescriptionSection,
     prescriptionFields
   );
+
+  Ui.renderDataOnClick(tabs);
 
   typeField.addEventListener("change", () => {
     Ui.toggleMedicineSection(
@@ -136,8 +139,6 @@ document.addEventListener("DOMContentLoaded", () => {
       dosage: dosage.value.trim(),
       frequency: frequency.value.trim(),
     };
-
-    console.log(price.value.trim());
 
     if (formValidator()) {
       if (form.dataset.mode === "add") {

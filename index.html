@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="/src/css/variables.css" />
   <link rel="stylesheet" href="/src/css/style.css" />
   <link rel="stylesheet" href="/src/css/button.css" />
+  <link rel="stylesheet" href="/src/css/tabs.css">
   <link rel="stylesheet" href="/src/css/form.css" />
   <link rel="stylesheet" href="/src/css/card.css" />
   <link rel="stylesheet" href="/src/css/confirm.css" />
@@ -26,7 +27,21 @@
       <!-- Add will reveal form modal -->
       <button class="button button--add button--show-form"><img src="./src/assets/icons/add.svg">Add New</button>
     </section>
-    <section class="data">
+    <section class="data-section">
+      <div class="tabs">
+        <div class="tab tabs__all tab--active" data-id="all">
+          <p>All</p>
+        </div>
+        <div class="tab tabs__otc" data-id="otc">
+          <p>Over the counter</p>
+        </div>
+        <div class="tab tabs__prescription" data-id="prescription">
+          <p>Prescription</p>
+        </div>
+      </div>
+      <div class="data">
+
+      </div>
       <!-- Data will be populated here -->
     </section>
   </main>
