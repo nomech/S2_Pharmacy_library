@@ -206,13 +206,13 @@ class Ui {
   static renderData(type) {
     const data = JSON.parse(localStorage.getItem("products")) || [];
 
-    const allData = data.all ? data.all : [];
+    const allData = data ? data : [];
 
-    const otcData = data.all.filter((item) => {
+    const otcData = data.filter((item) => {
       return item.type === "otc";
     });
 
-    const prescriptionData = data.all.filter((item) => {
+    const prescriptionData = data.filter((item) => {
       return item.type === "prescription";
     });
 
@@ -228,12 +228,12 @@ class Ui {
     }
     if (otcData.length === 0) {
       otcTab.style.display = "none";
-    }else {
+    } else {
       otcTab.style.display = "flex";
     }
     if (prescriptionData.length === 0) {
       prescriptionTab.style.display = "none";
-    }else {
+    } else {
       prescriptionTab.style.display = "flex";
     }
 
