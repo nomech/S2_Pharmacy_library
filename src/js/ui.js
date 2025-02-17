@@ -40,26 +40,26 @@ class Ui {
     form.dataset.mode = "edit";
     Ui.currentProductId = product.id;
 
-    const inputFields = document.querySelectorAll(".form__input");
     modal.style.display = "flex";
 
+    const inputFields = document.querySelectorAll(".form__input");
+
     inputFields.forEach((input) => {
-      Object.keys(product).forEach((key) => {
-        if (key === input.name) {
-          console.log(product[key]);
-          input.value = product[key];
-        }
-        if (key === "type")
-          if (product[key] === "prescription") {
-            prescriptionSection.style.display = "inherit";
-          } else if (product[key] === "otc") {
-            otcSection.style.display = "inherit";
-          } else {
-            prescriptionSection.style.display = "none";
-            otcSection.style.display = "none";
-          }
-      });
+      if (product.hasOwnProperty(input.name)) {
+        input.value = product[input.name];
+      }
     });
+
+    if (product.type === "prescription") {
+      prescriptionSection.style.display = "inherit";
+      otcSection.style.display = "none";
+    } else if (product.type === "otc") {
+      otcSection.style.display = "inherit";
+      prescriptionSection.style.display = "none";
+    } else {
+      prescriptionSection.style.display = "none";
+      otcSection.style.display = "none";
+    }
   }
 
   static closeModal(button, modal, prescriptionSection, otcSection) {
