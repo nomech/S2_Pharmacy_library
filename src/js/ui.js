@@ -43,8 +43,6 @@ class Ui {
     const inputFields = document.querySelectorAll(".form__input");
     modal.style.display = "flex";
 
-    console.log(product);
-    console.log(inputFields);
     inputFields.forEach((input) => {
       Object.keys(product).forEach((key) => {
         if (key === input.name) {
@@ -207,29 +205,46 @@ class Ui {
   // renders data
   static renderData(type) {
     const data = JSON.parse(localStorage.getItem("products")) || [];
-    const tabContainer = document.querySelector(".tabs");
-    tabContainer.style.display = "flex";
 
-    console.log(data);
-    if (data.length === 0) {
-      tabContainer.style.display = "none";
+    const allData = data.all ? data.all : [];
+
+    const otcData = data.all.filter((item) => {
+      return item.type === "otc";
+    });
+
+    const prescriptionData = data.all.filter((item) => {
+      return item.type === "prescription";
+    });
+
+    const allTab = document.querySelector(".tabs__all");
+    const otcTab = document.querySelector(".tabs__otc");
+    const prescriptionTab = document.querySelector(".tabs__prescription");
+
+    console.log(allData.length);
+    if (allData.length === 0) {
+      allTab.style.display = "none";
+    } else {
+      allTab.style.display = "flex";
+    }
+    if (otcData.length === 0) {
+      otcTab.style.display = "none";
+    }else {
+      otcTab.style.display = "flex";
+    }
+    if (prescriptionData.length === 0) {
+      prescriptionTab.style.display = "none";
+    }else {
+      prescriptionTab.style.display = "flex";
     }
 
     if (type === "all") {
-      const allData = data.all ? data.all : [];
       this.createElements(allData);
     } else if (type === "otc") {
-      const otcData = data.all.filter((item) => {
-        return item.type === "otc";
-      });
       this.createElements(otcData);
     } else if (type === "prescription") {
-      const prescriptionData = data.all.filter((item) => {
-        return item.type === "prescription";
-      });
       this.createElements(prescriptionData);
     } else {
-      console.log("Invalid type");
+      console.error("Invalid type");
     }
   }
 
