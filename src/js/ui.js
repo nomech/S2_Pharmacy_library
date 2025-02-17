@@ -115,7 +115,9 @@ class Ui {
   //function that creates elements to be rendered
   static createElements(data) {
     const dataContainer = document.querySelector(".data");
+
     dataContainer.innerHTML = "";
+
     if (!data.length > 0) {
       const noProduct = document.createElement("p");
       noProduct.className = "data__no-data";
@@ -183,30 +185,6 @@ class Ui {
   static currentTab = "all";
 
   // renders data
-  static renderData(type) {
-    Ui.currentTab = type;
-
-    const data =
-      JSON.parse(localStorage.getItem("products")) ||
-      "There is currently no products";
-
-    if (Ui.currentTab === "all") {
-      const allData = data.all ? data.all : [];
-      this.createElements(allData);
-    } else if (Ui.currentTab === "otc") {
-      const otcData = data.all.filter((item) => {
-        return item.type === "otc";
-      });
-      this.createElements(otcData);
-    } else if (Ui.currentTab === "prescription") {
-      const prescriptionData = data.all.filter((item) => {
-        return item.type === "prescription";
-      });
-      this.createElements(prescriptionData);
-    } else {
-      console.log("Invalid type");
-    }
-  }
 
   static renderDataOnClick(tabs) {
     tabs.forEach((tab) => {
@@ -228,9 +206,14 @@ class Ui {
 
   // renders data
   static renderData(type) {
-    const data =
-      JSON.parse(localStorage.getItem("products")) ||
-      "There is currently no products";
+    const data = JSON.parse(localStorage.getItem("products")) || [];
+    const tabContainer = document.querySelector(".tabs");
+    tabContainer.style.display = "flex";
+
+    console.log(data);
+    if (data.length === 0) {
+      tabContainer.style.display = "none";
+    }
 
     if (type === "all") {
       const allData = data.all ? data.all : [];
@@ -258,7 +241,7 @@ class Ui {
           if (tab.classList.contains("tab--active"))
             tab.classList.remove("tab--active");
         });
-        
+
         //Renders data for the current tab.
         Ui.renderData(tab.dataset.id);
 
