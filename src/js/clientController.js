@@ -80,9 +80,6 @@ class ClientController {
     );
 
     if (index !== -1) {
-      const editedType = editedProduct.type;
-      let currentType = ClientController.products[index].type;
-
       ClientController.products[index] = editedProduct;
     } else {
       console.log("Product not found");

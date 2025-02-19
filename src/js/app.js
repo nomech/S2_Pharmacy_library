@@ -114,6 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
     prescriptionFields
   );
 
+  
   Ui.renderDataOnClick(tabs);
 
   typeField.addEventListener("change", () => {
@@ -141,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     if (formValidator()) {
+      console.log(form.dataset.mode)
       if (form.dataset.mode === "add") {
         ClientController.addProduct(product);
       } else if (form.dataset.mode === "edit") {

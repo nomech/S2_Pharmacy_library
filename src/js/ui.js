@@ -1,13 +1,16 @@
 import ClientController from "./clientController";
+    
 
 class Ui {
+  
   // mothod to open modal
   static openModal(button, modal) {
+    const submitEdit = document.querySelector(".button--submit-edit");
+    const submitAdd = document.querySelector(".button--submit");
     const inputFields = document.querySelectorAll(".form__input");
     const form = document.querySelector(".form");
     const formErrorSelect = document.querySelector(".form__error--select");
-    form.dataset.mode = "add";
-
+    
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         modal.style.display = "none";
@@ -15,6 +18,9 @@ class Ui {
     });
 
     button.addEventListener("click", () => {
+      submitEdit.style.display = "none";
+      submitAdd.style.display = "block";
+      form.dataset.mode = "add";
       modal.style.display = "flex";
       formErrorSelect.style.visibility = "hidden";
 
@@ -43,7 +49,7 @@ class Ui {
     modal.style.display = "flex";
 
     const inputFields = document.querySelectorAll(".form__input");
-
+    console.log(product);
     inputFields.forEach((input) => {
       if (product.hasOwnProperty(input.name)) {
         input.value = product[input.name];
@@ -63,8 +69,6 @@ class Ui {
   }
 
   static closeModal(button, modal, prescriptionSection, otcSection) {
-    const submitEdit = document.querySelector(".button--submit-edit");
-    const submitAdd = document.querySelector(".button--submit");
 
     button.addEventListener("click", (e) => {
       e.preventDefault();
@@ -183,31 +187,9 @@ class Ui {
   static currentTab = "all";
 
   // renders data
-
-  static renderDataOnClick(tabs) {
-    tabs.forEach((tab) => {
-      tab.addEventListener("click", () => {
-        // Removes any active tab indicator
-        tabs.forEach((tab) => {
-          if (tab.classList.contains("tab--active"))
-            tab.classList.remove("tab--active");
-        });
-
-        //Renders data for the current tab.
-        Ui.renderData(tab.dataset.id);
-
-        //Makes the current tab active
-        tab.classList.add("tab--active");
-      });
-    });
-  }
-
-  // renders data
   static renderData(type) {
     const data = JSON.parse(localStorage.getItem("products")) || [];
-
     const allData = data ? data : [];
-
     const otcData = data.filter((item) => {
       return item.type === "otc";
     });
@@ -220,7 +202,6 @@ class Ui {
     const otcTab = document.querySelector(".tabs__otc");
     const prescriptionTab = document.querySelector(".tabs__prescription");
 
-    console.log(allData.length);
     if (allData.length === 0) {
       allTab.style.display = "none";
     } else {
@@ -256,6 +237,10 @@ class Ui {
           if (tab.classList.contains("tab--active"))
             tab.classList.remove("tab--active");
         });
+
+        Ui.currentTab = tab.dataset.id;
+        console.log(Ui.currentTab);
+        console.log("hello");
 
         //Renders data for the current tab.
         Ui.renderData(tab.dataset.id);
