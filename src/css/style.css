@@ -8,7 +8,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--medium);
-  margin: 50px 300px;
+  margin: 50px 200px;
   max-width: 1400px;
   width: 100%;
 }
