@@ -18,6 +18,11 @@ nav {
   justify-content: center;
 }
 
+.nav__user:hover {
+  background-color: var(--secondary-nav-bg);
+  cursor: not-allowed;
+}
+
 .nav__title {
   font-size: 1.5rem;
   font-weight: 700;
@@ -34,15 +39,15 @@ nav {
   gap: var(--small);
   grid-column: 2;
   max-width: 400px;
-  margin: 0 2rem;
+  margin: 0 var(--large);
 }
 
 .nav__search-input {
   width: 100%;
   padding: 0.5rem 1rem;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--text-strong);
   border-radius: 50px;
-  background-color: #f8f9fa;
+  background-color: var(--secondary-nav-bg);
 }
 
 .nav__user {

@@ -16,6 +16,7 @@
 }
 
 .card__title {
+  font-weight: 500;
   padding-bottom: var(--xsmall);
 }
 
@@ -28,16 +29,19 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 2px;
   color: #867f63;
   background-color: #fff3cd;
-  padding: var(--xsmall);
+  padding: 4px;
 }
 
 .card__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--xsmall);
   color: #797979;
 }
 .card__text strong {
@@ -55,7 +59,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--small) 0;
+  padding-top: var(--small);
   border-top: 1px solid var(--border);
   margin-top: auto;
 }

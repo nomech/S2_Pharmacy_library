@@ -93,7 +93,8 @@
           </div>
           <div class="form__group">
             <label class="form__label" for="quantity">Quantity</label>
-            <input class="form__input form__input--quantity" type="number" id="quantity" name="quantity" />
+            <input class="form__input form__input--quantity" type="number" id="quantity" name="quantity" min="0"
+              max="9999" />
           </div>
           <div class="form__group">
             <label class="form__label" for="type">Type</label>
@@ -108,9 +109,6 @@
           <!-- Prescription form section -->
           <div class="form__group form__group--prescription">
             <label class="form__label" for="dosage">Dosage</label>
-            <!--           <input class="form__input form__input--dosage" type="text" name="dosage" id="dosage"
-            data-type="prescription" /> -->
-
             <select class="form__input form__input--dosage" name="dosage" id="dosage" data-type="prescription">
               <option value="1">1 mg</option>
               <option value="5">5mg</option>
@@ -123,8 +121,6 @@
             </select>
 
             <label class="form__label form__label--frequency" for="frequency">Frequency</label>
-            <!--           <input class="form__input form__input--frequency" type="text" name="frequency" id="frequency"
-            data-type="prescription" /> -->
             <select class="form__input form__input--frequency" type="text" name="frequency" id="frequency"
               data-type="prescription">
               <option value="1">Once a day</option>
