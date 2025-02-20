@@ -38,6 +38,8 @@ const otcFields = [
   document.querySelector(".form__input--age"),
 ];
 
+const formErrorSelect = document.querySelector(".form__error--select");
+
 const formValidator = () => {
   const nameValue = name.value.trim();
   const manufacturerValue = manufacturer.value.trim();
@@ -48,7 +50,6 @@ const formValidator = () => {
   const priceValue = price.value.trim();
   const dosageValue = dosage.value.trim();
   const frequencyValue = frequency.value.trim();
-  const formErrorSelect = document.querySelector(".form__error--select");
 
   let isValid = true;
   if (!nameValue) {
@@ -114,7 +115,6 @@ document.addEventListener("DOMContentLoaded", () => {
     prescriptionFields
   );
 
-  
   Ui.renderDataOnClick(tabs);
 
   typeField.addEventListener("change", () => {
@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     if (formValidator()) {
-      console.log(form.dataset.mode)
+      formErrorSelect.style.visibility = "hidden";
       if (form.dataset.mode === "add") {
         ClientController.addProduct(product);
       } else if (form.dataset.mode === "edit") {

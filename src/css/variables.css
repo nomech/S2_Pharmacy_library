@@ -1,7 +1,7 @@
 :root {
   /* Colors */
   --primary-background: #ffffff;
-  --secondary-background: #f7f7f7;
+  --secondary-background: #f5f7fa;
   --border: #dcdcdc;
 
   --button-primary: #007bff;
@@ -15,11 +15,12 @@
   --button-edit-hover: #efeded;
 
   --button-delete: #dc3545;
-  --button-delete-hover: #e4606d;
+  --button-delete-hover: #c82333;
 
 
   --text-primary: #ffffff;
   --text-secondary: #000000;
+  --text-strong: #5f5f5f;
 
   /* Fonts */
   --font-roboto: "Roboto", sans-serif;

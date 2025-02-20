@@ -83,18 +83,41 @@
         <!-- Prescription form section -->
         <div class="form__group form__group--prescription">
           <label class="form__label" for="dosage">Dosage</label>
-          <input class="form__input form__input--dosage" type="text" name="dosage" id="dosage"
-            data-type="prescription" />
+          <!--           <input class="form__input form__input--dosage" type="text" name="dosage" id="dosage"
+            data-type="prescription" /> -->
 
-          <label class="form__label" for="frequency">Frequency</label>
-          <input class="form__input form__input--frequency" type="text" name="frequency" id="frequency"
-            data-type="prescription" />
+          <select class="form__input form__input--dosage" name="dosage" id="dosage" data-type="prescription">
+            <option value="1">1 mg</option>
+            <option value="5">5mg</option>
+            <option value="10">10mg</option>
+            <option value="50">50mg</option>
+            <option value="100">100mg</option>
+            <option value="200">200mg</option>
+            <option value="500">500mg</option>
+            <option value="1000">1000mg</option>
+          </select>
+
+          <label class="form__label form__label--frequency" for="frequency">Frequency</label>
+          <!--           <input class="form__input form__input--frequency" type="text" name="frequency" id="frequency"
+            data-type="prescription" /> -->
+          <select class="form__input form__input--frequency" type="text" name="frequency" id="frequency"
+            data-type="prescription">
+            <option value="1">Once a day</option>
+            <option value="2">Twice a day</option>
+            <option value="3">Once a week</option>
+            <option value="4">Twice a week</option>
+          </select>
+
         </div>
 
         <!-- OTC form section -->
         <div class="form__group form__group--otc">
           <label class="form__label" for="age">Age restriction</label>
-          <input class="form__input form__input--age" type="number" name="age" id="age" data-type="otc" />
+          <select class="form__input form__input--age" name="age" id="age" data-type="otc">
+            <option value="none">No age restriction</option>
+            <option value="18">18+</option>
+            <option value="21">21+</option>
+          </select>
 
           <label class="form__label" for="price">Price</label>
           <input class="form__input form__input--price" type="number" name="price" id="price" data-type="otc" />

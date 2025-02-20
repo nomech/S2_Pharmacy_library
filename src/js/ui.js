@@ -1,8 +1,6 @@
 import ClientController from "./clientController";
-    
 
 class Ui {
-  
   // mothod to open modal
   static openModal(button, modal) {
     const submitEdit = document.querySelector(".button--submit-edit");
@@ -10,7 +8,7 @@ class Ui {
     const inputFields = document.querySelectorAll(".form__input");
     const form = document.querySelector(".form");
     const formErrorSelect = document.querySelector(".form__error--select");
-    
+
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         modal.style.display = "none";
@@ -69,7 +67,6 @@ class Ui {
   }
 
   static closeModal(button, modal, prescriptionSection, otcSection) {
-
     button.addEventListener("click", (e) => {
       e.preventDefault();
       modal.style.display = "none";
@@ -128,24 +125,58 @@ class Ui {
     }
 
     data.forEach((product) => {
+      console.log(product);
+
+      // Query selectors
+      const formModal = document.querySelector(".form-modal");
+      const submitEdit = document.querySelector(".button--submit-edit");
+      const submitAdd = document.querySelector(".button--submit");
+
+      // Create elements
       const card = document.createElement("div");
       const cardDataGroup = document.createElement("div");
-      const cardheader = document.createElement("div");
+      const cardHeader = document.createElement("div");
       const cardTitle = document.createElement("h3");
       const cardFooter = document.createElement("div");
-      const cardText = document.createElement("p");
+      const cardText = document.createElement("div");
       const cardButtons = document.createElement("div");
       const editButton = document.createElement("button");
       const editImg = document.createElement("img");
       const deleteButton = document.createElement("button");
       const deleteImg = document.createElement("img");
-      const formModal = document.querySelector(".form-modal");
-      const submitEdit = document.querySelector(".button--submit-edit");
-      const submitAdd = document.querySelector(".button--submit");
+      const cardlabel = document.createElement("div");
+      const stock = document.createElement("p");
 
+      const frequencyLabel = document.createElement("strong");
+      const frequencyText = document.createElement("span");
+      const frequency = document.createElement("div");
+
+      // Manufacturer
+      const mfrLabel = document.createElement("strong");
+      const mfrText = document.createElement("span");
+      const mfr = document.createElement("div");
+
+      // Expiry Date
+      const expLabel = document.createElement("strong");
+      const expText = document.createElement("span");
+      const exp = document.createElement("div");
+
+      // Age
+      const ageLabel = document.createElement("strong");
+      const ageText = document.createElement("span");
+      const age = document.createElement("div");
+
+      // Price
+      const priceLabel = document.createElement("strong");
+      const priceText = document.createElement("span");
+      const price = document.createElement("div");
+
+      const dosage = product.dosage ? `${product.dosage}mg` : "";
+
+      // Assign class names
       card.className = "data__card card";
       cardDataGroup.className = "card__data-group";
-      cardheader.className = "card__header";
+      cardHeader.className = "card__header";
       cardTitle.className = "card__title";
       cardFooter.className = "card__footer";
       cardText.className = "card__text";
@@ -153,25 +184,89 @@ class Ui {
       editButton.className = "button button--edit button--card";
       deleteButton.className = "button button--delete button--card";
       editImg.className = "button__image button__image--edit";
-      deleteImg.className = "button__image on__image--delete";
+      deleteImg.className = "button__image button__image--delete";
+      cardlabel.className = "card__label";
 
-      cardTitle.innerText = `${product.name}`;
-      cardText.innerText = `Mfr. ${product.manufacturer} | Exp. ${product.expiryDate} | Qty. ${product.quantity}`;
+      stock.className = "card__stock";
+      mfr.className = "card__manufacturer";
+      exp.className = "card__expire";
+      age.className = "card__age";
+      price.className = "card__names";
+      frequency.className = "card__frequency";
 
+      // Assign values to text elements
+      cardlabel.innerText = `${product.type}`;
+      cardTitle.innerText = `${product.name} ${dosage}`;
+      stock.innerText = `Stock: ${product.quantity} units`;
+
+      mfrLabel.innerText = "Mfr: ";
+      mfrText.innerText = `${product.manufacturer}`;
+
+      expLabel.innerText = "Exp: ";
+      expText.innerText = `${product.expiryDate}`;
+
+      let ageData = "";
+      if(product.age === "none") {
+        ageData = "No age restriction";
+      } else if(product.age === "18") {
+        ageData = "18+";
+      } else if(product.age === "21") {
+        ageData = "21+";
+      }
+
+      let frequencyData = "";
+      if(product.frequency === "1") {
+        frequencyData = "Once a day";
+      } else if(product.frequency === "2") {
+        frequencyData = "Twice a day";
+      } else if(product.frequency === "3") {
+        frequencyData = "Once a week";
+      } else if(product.frequency === "4") {
+        frequencyData = "Twice a week";
+      }
+
+      ageLabel.innerText = "Age: ";
+      ageText.innerText = `${ageData}`;
+
+
+      priceLabel.innerText = "Price: ";
+      priceText.innerText = `${product.price} NOK`;
+
+      frequencyLabel.innerText = "Frequency: ";
+      frequencyText.innerText = `${frequencyData}`;
+  
+      mfr.append(mfrLabel, mfrText);
+      exp.append(expLabel, expText);
+
+      // Append labels and values
+      if (product.type === "otc") {
+        age.append(ageLabel, ageText);
+        price.append(priceLabel, priceText);
+        cardText.append(mfr, exp, age, price);
+      }
+
+      // Append labels and values
+      if (product.type === "prescription") {
+        frequency.append(frequencyLabel, frequencyText);
+        cardText.append(mfr, exp, frequency);
+      }
+      // Add images
       editImg.src = `./src/assets/icons/edit.svg`;
       deleteImg.src = `./src/assets/icons/delete.svg`;
 
-      cardheader.append(cardTitle);
-      cardFooter.append(cardText);
-
-      cardDataGroup.append(cardheader, cardFooter);
+      // Append all elements to card
+      cardHeader.append(cardTitle);
+      //cardText.append(mfr, exp, age, price);
+      cardDataGroup.append(cardHeader, cardText);
       editButton.append(editImg, `Edit`);
       deleteButton.append(deleteImg, `Delete`);
       cardButtons.append(editButton, deleteButton);
-      card.append(cardDataGroup, cardButtons);
+      cardFooter.append(stock, cardButtons);
+      card.append(cardlabel, cardDataGroup, cardFooter);
       dataContainer.append(card);
 
-      editButton.addEventListener("click", (e) => {
+      // Event listeners
+      editButton.addEventListener("click", () => {
         Ui.openEditModal(formModal, product);
         submitEdit.style.display = "block";
         submitAdd.style.display = "none";
@@ -197,26 +292,6 @@ class Ui {
     const prescriptionData = data.filter((item) => {
       return item.type === "prescription";
     });
-
-    const allTab = document.querySelector(".tabs__all");
-    const otcTab = document.querySelector(".tabs__otc");
-    const prescriptionTab = document.querySelector(".tabs__prescription");
-
-    if (allData.length === 0) {
-      allTab.style.display = "none";
-    } else {
-      allTab.style.display = "flex";
-    }
-    if (otcData.length === 0) {
-      otcTab.style.display = "none";
-    } else {
-      otcTab.style.display = "flex";
-    }
-    if (prescriptionData.length === 0) {
-      prescriptionTab.style.display = "none";
-    } else {
-      prescriptionTab.style.display = "flex";
-    }
 
     if (type === "all") {
       this.createElements(allData);

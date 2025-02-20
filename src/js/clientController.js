@@ -28,6 +28,7 @@ class ClientController {
         product.dosage,
         product.frequency
       );
+
       ClientController.products.push(item);
     } else {
       console.log("Invalid type");
@@ -36,8 +37,8 @@ class ClientController {
     this.saveProducts(ClientController.products);
   }
 
-  static addOTC(name, manufacturer, expiryDate, quantity, age, price) {
-    return new OTC(name, manufacturer, expiryDate, quantity, age, price);
+  static addOTC(name, manufacturer, expiryDate, type, quantity, age, price) {
+    return new OTC(name, manufacturer, expiryDate, type, quantity, age, price);
   }
 
   static addPrescription(
@@ -47,8 +48,7 @@ class ClientController {
     quantity,
     type,
     dosage,
-    frequency,
-    price
+    frequency
   ) {
     return new Prescription(
       name,
@@ -57,12 +57,12 @@ class ClientController {
       quantity,
       type,
       dosage,
-      frequency,
-      price
+      frequency
     );
   }
 
   static saveProducts(products) {
+    console.log(products);
     localStorage.setItem("products", JSON.stringify(products));
   }
 

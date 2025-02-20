@@ -35,6 +35,10 @@
   align-items: center;
 }
 
+.form__group--frequency {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
 .form__input {
   height: var(--medium);
   outline: none;
@@ -72,4 +76,8 @@
   grid-column: 2;
   color: rgba(255, 0, 0, 0.75);
   font-style: italic;
+}
+
+.form__input--frequency, .form__label--frequency{
+  grid-row: 2;
 }
