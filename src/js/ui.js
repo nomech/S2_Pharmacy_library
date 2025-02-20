@@ -1,4 +1,6 @@
 import ClientController from "./clientController";
+import editIcon from "../assets/icons/edit.svg";
+import deleteIcon from "../assets/icons/delete.svg";
 
 class Ui {
   // mothod to open modal
@@ -253,8 +255,8 @@ class Ui {
         cardText.append(mfr, exp, frequency);
       }
       // Add images
-      editImg.src = `./src/assets/icons/edit.svg`;
-      deleteImg.src = `./src/assets/icons/delete.svg`;
+      editImg.src = `${editIcon}`;
+      deleteImg.src = `${deleteIcon}`;
 
       // Append all elements to card
       cardHeader.append(cardTitle);
