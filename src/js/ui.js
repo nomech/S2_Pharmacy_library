@@ -17,7 +17,7 @@ class Ui {
 
     button.addEventListener("click", () => {
       submitEdit.style.display = "none";
-      submitAdd.style.display = "block";
+      submitAdd.style.display = "flex";
       form.dataset.mode = "add";
       modal.style.display = "flex";
       formErrorSelect.style.visibility = "hidden";
@@ -71,7 +71,7 @@ class Ui {
       e.preventDefault();
       modal.style.display = "none";
       submitEdit.style.display = "none";
-      submitAdd.style.display = "block";
+      submitAdd.style.display = "flex";
       if (prescriptionSection && otcSection) {
         prescriptionSection.style.display = "none";
         otcSection.style.display = "none";
@@ -112,7 +112,7 @@ class Ui {
   }
 
   //function that creates elements to be rendered
-  static createElements(data) {
+  static createElements(data, mode) {
     const dataContainer = document.querySelector(".data");
 
     dataContainer.innerHTML = "";
@@ -120,7 +120,10 @@ class Ui {
     if (!data.length > 0) {
       const noProduct = document.createElement("p");
       noProduct.className = "data__no-data";
-      noProduct.innerHTML = "There are no products added yet";
+      noProduct.innerHTML =
+        mode === "search"
+          ? "No products found with that name"
+          : "There are no products added yet";
       dataContainer.append(noProduct);
     }
 
@@ -267,7 +270,7 @@ class Ui {
       // Event listeners
       editButton.addEventListener("click", () => {
         Ui.openEditModal(formModal, product);
-        submitEdit.style.display = "block";
+        submitEdit.style.display = "flex";
         submitAdd.style.display = "none";
       });
 
@@ -325,20 +328,55 @@ class Ui {
     });
   }
 
-  
-
   static renderSearchData(data) {
-    
-    Ui.createElements(data)
+    Ui.createElements(data, "search");
+  }
+
+  static resetSearch() {
+    const panelTitle = document.querySelector(".panel__title");
+    const addButton = document.querySelector(".button--add");
+    const searchPanel = document.querySelector(".panel__search");
+    const resetButton = document.querySelector(".button--reset");
+    const queryText = document.querySelector(".panel__search-query");
+    const tabs = document.querySelector(".tabs");
+    const searchInput = document.querySelector(".nav__search-input");
+
+    const data = JSON.parse(localStorage.getItem("products")) || [];
+    panelTitle.innerText = "Admin Panel";
+    addButton.style.visibility = "visible";
+    resetButton.style.display = "none";
+    searchPanel.style.display = "none";
+    tabs.style.display = "flex";
+    searchInput.value = "";
+    console.log(queryText.value);
+    console.log(data);
+
+    Ui.createElements(data);
   }
 
   static submitSearch(searchQuery) {
-    const results = JSON.parse(localStorage.getItem("products")).filter(
-      (product) => {
-        return product.name.toLowerCase().includes(searchQuery.toLowerCase());
-      }
-    );
+    const panelTitle = document.querySelector(".panel__title");
+    const addButton = document.querySelector(".button--add");
+    const searchPanel = document.querySelector(".panel__search");
+    const resetButton = document.querySelector(".button--reset");
+    const queryText = document.querySelector(".panel__search-query");
+    const tabs = document.querySelector(".tabs");
+    const data = JSON.parse(localStorage.getItem("products")) || [];
+    const results = data.filter((product) => {
+      return product.name.toLowerCase().includes(searchQuery.toLowerCase());
+    });
+
     Ui.renderSearchData(results);
+    queryText.innerText = `"${searchQuery}"`;
+    if (searchQuery.length > 0) {
+      addButton.style.visibility = "hidden";
+      panelTitle.innerText = "Search Results";
+      searchPanel.style.display = "flex";
+      tabs.style.display = "none";
+      resetButton.style.display = "flex";
+    } else {
+      Ui.resetSearch();
+    }
   }
 }
 

@@ -10,6 +10,7 @@ body {
   gap: var(--medium);
   margin: 50px 300px;
   max-width: 1400px;
+  width: 100%;
 }
 
 main {
@@ -30,6 +31,14 @@ main {
   flex-direction: column;
 }
 
+.panel__search {
+  display: flex;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+  padding: var(--small) 0;
+  margin-top: var(--small);
+}
+
 .panel__main {
   width: 100%;
   display: flex;
@@ -39,7 +48,7 @@ main {
 }
 
 .panel__search {
-  display: flex;
+  display: none;
   align-items: center;
   gap: var(--xsmall);
 }

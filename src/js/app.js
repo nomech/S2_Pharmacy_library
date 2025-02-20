@@ -41,6 +41,7 @@ const otcFields = [
 const formErrorSelect = document.querySelector(".form__error--select");
 
 const search = document.querySelector(".nav__search-input");
+const searchReset = document.querySelector(".button--reset");
 
 const formValidator = () => {
   const nameValue = name.value.trim();
@@ -163,5 +164,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Enter") {
       Ui.submitSearch(e.target.value);
     }
+  });
+  searchReset.addEventListener("click", () => {
+    Ui.resetSearch();
   });
 });

@@ -47,6 +47,7 @@ nav {
 
 .nav__user {
   border: 1px solid var(--border);
+  width: 100%;
   gap: var(--xsmall);
   border-radius: var(--xsmall);
   color: var(--button-primary);
