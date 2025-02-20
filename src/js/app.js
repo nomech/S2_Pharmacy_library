@@ -40,6 +40,8 @@ const otcFields = [
 
 const formErrorSelect = document.querySelector(".form__error--select");
 
+const search = document.querySelector(".nav__search-input");
+
 const formValidator = () => {
   const nameValue = name.value.trim();
   const manufacturerValue = manufacturer.value.trim();
@@ -154,6 +156,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       Ui.closeOnSubmit(formModal, prescriptionSection, otcSection);
       Ui.renderData(Ui.currentTab);
+    }
+  });
+
+  search.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      Ui.submitSearch(e.target.value);
     }
   });
 });

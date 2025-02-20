@@ -206,35 +206,34 @@ class Ui {
       expText.innerText = `${product.expiryDate}`;
 
       let ageData = "";
-      if(product.age === "none") {
+      if (product.age === "none") {
         ageData = "No age restriction";
-      } else if(product.age === "18") {
+      } else if (product.age === "18") {
         ageData = "18+";
-      } else if(product.age === "21") {
+      } else if (product.age === "21") {
         ageData = "21+";
       }
 
       let frequencyData = "";
-      if(product.frequency === "1") {
+      if (product.frequency === "1") {
         frequencyData = "Once a day";
-      } else if(product.frequency === "2") {
+      } else if (product.frequency === "2") {
         frequencyData = "Twice a day";
-      } else if(product.frequency === "3") {
+      } else if (product.frequency === "3") {
         frequencyData = "Once a week";
-      } else if(product.frequency === "4") {
+      } else if (product.frequency === "4") {
         frequencyData = "Twice a week";
       }
 
       ageLabel.innerText = "Age: ";
       ageText.innerText = `${ageData}`;
 
-
       priceLabel.innerText = "Price: ";
       priceText.innerText = `${product.price} NOK`;
 
       frequencyLabel.innerText = "Frequency: ";
       frequencyText.innerText = `${frequencyData}`;
-  
+
       mfr.append(mfrLabel, mfrText);
       exp.append(expLabel, expText);
 
@@ -324,6 +323,22 @@ class Ui {
         tab.classList.add("tab--active");
       });
     });
+  }
+
+  
+
+  static renderSearchData(data) {
+    
+    Ui.createElements(data)
+  }
+
+  static submitSearch(searchQuery) {
+    const results = JSON.parse(localStorage.getItem("products")).filter(
+      (product) => {
+        return product.name.toLowerCase().includes(searchQuery.toLowerCase());
+      }
+    );
+    Ui.renderSearchData(results);
   }
 }
 
