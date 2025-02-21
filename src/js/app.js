@@ -42,6 +42,9 @@ const formErrorSelect = document.querySelector(".form__error--select");
 
 const search = document.querySelector(".nav__search-input");
 const searchReset = document.querySelector(".button--reset");
+const submitEdit = document.querySelector(".button--submit-edit");
+const submitAdd = document.querySelector(".button--submit");
+const inputFields = document.querySelectorAll(".form__input");
 
 const formValidator = () => {
   const nameValue = name.value.trim();
@@ -108,9 +111,19 @@ const formValidator = () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   Ui.renderData("all");
-  Ui.openModal(showButton, formModal);
+  Ui.openModal(
+    showButton,
+    formModal,
+    submitEdit,
+    inputFields,
+    submitAdd,
+    form,
+    formErrorSelect
+  );
   Ui.closeModal(cancelButton, formModal, prescriptionSection, otcSection);
-  Ui.openModal(deleteButton, deleteModal);
+
+
+
   Ui.closeModal(
     deleteCancelButton,
     deleteModal,

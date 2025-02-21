@@ -21,6 +21,7 @@
 }
 
 .button--add {
+  width: 164px;
   background-color: var(--button-primary);
   color: var(--text-primary);
 }

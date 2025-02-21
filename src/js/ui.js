@@ -4,13 +4,15 @@ import deleteIcon from "../assets/icons/delete.svg";
 
 class Ui {
   // mothod to open modal
-  static openModal(button, modal) {
-    const submitEdit = document.querySelector(".button--submit-edit");
-    const submitAdd = document.querySelector(".button--submit");
-    const inputFields = document.querySelectorAll(".form__input");
-    const form = document.querySelector(".form");
-    const formErrorSelect = document.querySelector(".form__error--select");
-
+  static openModal(
+    button,
+    modal,
+    submitEdit,
+    inputFields,
+    submitAdd,
+    form,
+    formErrorSelect
+  ) {
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         modal.style.display = "none";
@@ -32,6 +34,20 @@ class Ui {
           input.value = "none";
         }
       });
+    });
+  }
+
+  static openConfirmDeleteModal(id) {
+    const openConfirmModal = document.querySelector(".button--delete");
+    const confirmDelete = document.querySelector(".button--confirm");
+    const confirmModal = document.querySelector(".delete-modal");
+
+    openConfirmModal.addEventListener("click", () => {});
+
+    confirmDelete.addEventListener("click", () => {
+      ClientController.deleteProducts(id);
+      Ui.renderData(Ui.currentTab);
+      confirmModal.style.display = "none";
     });
   }
 
@@ -130,11 +146,11 @@ class Ui {
     }
 
     data.forEach((product) => {
-
       // Query selectors
       const formModal = document.querySelector(".form-modal");
       const submitEdit = document.querySelector(".button--submit-edit");
       const submitAdd = document.querySelector(".button--submit");
+      const confirmModal = document.querySelector(".delete-modal");
 
       // Create elements
       const card = document.createElement("div");
@@ -276,8 +292,8 @@ class Ui {
       });
 
       deleteButton.addEventListener("click", () => {
-        ClientController.deleteProducts(product.id);
-        Ui.renderData(Ui.currentTab);
+        confirmModal.style.display = "flex";
+        Ui.openConfirmDeleteModal(product.id);
       });
     });
   }
@@ -336,7 +352,6 @@ class Ui {
     const addButton = document.querySelector(".button--add");
     const searchPanel = document.querySelector(".panel__search");
     const resetButton = document.querySelector(".button--reset");
-    const queryText = document.querySelector(".panel__search-query");
     const tabs = document.querySelector(".tabs");
     const searchInput = document.querySelector(".nav__search-input");
 
