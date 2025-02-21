@@ -31,7 +31,7 @@ class ClientController {
 
       ClientController.products.push(item);
     } else {
-      console.log("Invalid type");
+      console.error("Invalid type");
     }
 
     this.saveProducts(ClientController.products);
@@ -81,7 +81,7 @@ class ClientController {
     if (index !== -1) {
       ClientController.products[index] = editedProduct;
     } else {
-      console.log("Product not found");
+      console.error("Product not found");
     }
 
     this.saveProducts(ClientController.products);

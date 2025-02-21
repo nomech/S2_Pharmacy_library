@@ -49,7 +49,7 @@ class Ui {
     modal.style.display = "flex";
 
     const inputFields = document.querySelectorAll(".form__input");
-    console.log(product);
+
     inputFields.forEach((input) => {
       if (product.hasOwnProperty(input.name)) {
         input.value = product[input.name];
@@ -130,7 +130,6 @@ class Ui {
     }
 
     data.forEach((product) => {
-      console.log(product);
 
       // Query selectors
       const formModal = document.querySelector(".form-modal");
@@ -318,8 +317,6 @@ class Ui {
         });
 
         Ui.currentTab = tab.dataset.id;
-        console.log(Ui.currentTab);
-        console.log("hello");
 
         //Renders data for the current tab.
         Ui.renderData(tab.dataset.id);
@@ -345,13 +342,11 @@ class Ui {
 
     const data = JSON.parse(localStorage.getItem("products")) || [];
     panelTitle.innerText = "Admin Panel";
-    addButton.style.visibility = "visible";
+    addButton.style.display = "flex";
     resetButton.style.display = "none";
     searchPanel.style.display = "none";
     tabs.style.display = "flex";
     searchInput.value = "";
-    console.log(queryText.value);
-    console.log(data);
 
     Ui.createElements(data);
   }
@@ -371,7 +366,7 @@ class Ui {
     Ui.renderSearchData(results);
     queryText.innerText = `"${searchQuery}"`;
     if (searchQuery.length > 0) {
-      addButton.style.visibility = "hidden";
+      addButton.style.display = "none";
       panelTitle.innerText = "Search Results";
       searchPanel.style.display = "flex";
       tabs.style.display = "none";
