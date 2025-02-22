@@ -1,143 +1,141 @@
 import Ui from "./ui";
 import ClientController from "./clientController";
-import formValidator from "./formValidator";
+import PageElements from "./pageElements.js";
 
-const showButton = document.querySelector(".button--show-form");
-const formModal = document.querySelector(".form-modal");
-const form = document.querySelector(".form");
-const deleteButton = document.querySelector(".button--delete");
-const deleteModal = document.querySelector(".delete-modal");
+const formValidator = (page) => {
+  const nameValue = page.name.value.trim();
+  const manufacturerValue = page.manufacturer.value.trim();
+  const expiryDateValue = page.expiryDate.value.trim();
+  const quantityValue = page.quantity.value.trim();
+  const typeValue = page.typeField.value.trim();
+  const ageValue = page.age.value.trim();
+  const priceValue = page.price.value.trim();
+  const dosageValue = page.dosage.value.trim();
+  const frequencyValue = page.frequency.value.trim();
 
-const cancelButton = document.querySelector(".button--cancel");
-const deleteCancelButton = document.querySelector(
-  ".delete-modal__button--cancel"
-);
+  let isValid = true;
+  if (!nameValue) {
+    page.name.placeholder = "Name is reqired";
+    isValid = false;
+  }
 
-const tabs = document.querySelectorAll(".tab");
+  if (!manufacturerValue) {
+    page.manufacturer.placeholder = "Manufacturer is reqired";
+    isValid = false;
+  }
 
-const name = document.querySelector(".form__input--name");
-const manufacturer = document.querySelector(".form__input--manufacturer");
-const expiryDate = document.querySelector(".form__input--expire");
-const quantity = document.querySelector(".form__input--quantity");
-const dosage = document.querySelector(".form__input--dosage");
-const frequency = document.querySelector(".form__input--frequency");
-const price = document.querySelector(".form__input--price");
-const age = document.querySelector(".form__input--age");
-const typeField = document.querySelector(".form__input--type");
-const prescriptionSection = document.querySelector(
-  ".form__group--prescription"
-);
+  if (!expiryDateValue) {
+    page.expiryDate.placeholder = "Name is reqired";
+    isValid = false;
+  }
 
-const formErrors = document.querySelectorAll(".form__error");
+  if (!quantityValue) {
+    page.quantity.placeholder = "Quantity is reqired";
+    isValid = false;
+  }
 
-const prescriptionFields = [
-  document.querySelector(".form__input--dosage"),
-  document.querySelector(".form__input--frequency"),
-];
+  if (typeValue === "none") {
+    page.formErrorSelect.style.visibility = "visible";
+    isValid = false;
+  }
 
-const otcSection = document.querySelector(".form__group--otc");
-const otcFields = [
-  document.querySelector(".form__input--price"),
-  document.querySelector(".form__input--age"),
-];
+  if (typeValue === "otc") {
+    if (!ageValue) {
+      page.age.placeholder = "Age is reqired";
+      isValid = false;
+    }
 
-const formErrorSelect = document.querySelector(".form__error--select");
+    if (!priceValue) {
+      page.price.placeholder = "Price is reqired";
+      isValid = false;
+    }
+  }
 
-const search = document.querySelector(".nav__search-input");
-const searchReset = document.querySelector(".button--reset");
-const submitEdit = document.querySelector(".button--submit-edit");
-const submitAdd = document.querySelector(".button--submit");
-const inputFields = document.querySelectorAll(".form__input");
+  if (typeValue === "prescription") {
+    if (!dosageValue) {
+      page.dosage.placeholder = "Dosage is reqired";
+      isValid = false;
+    }
+
+    if (!frequencyValue) {
+      page.requency.placeholder = "Frequency is reqired";
+      isValid = false;
+    }
+  }
+  return isValid;
+};
 
 document.addEventListener("DOMContentLoaded", () => {
-  Ui.renderData("all");
-  Ui.openModal(
-    showButton,
-    formModal,
-    submitEdit,
-    inputFields,
-    submitAdd,
-    form,
-    formErrorSelect
+  const page = new PageElements();
+  const ui = new Ui(page);
+  ui.renderData("all");
+  ui.openModal(
+    page.showButton,
+    page.formModal,
+    page.submitEdit,
+    page.inputFields,
+    page.submitAdd,
+    page.form,
+    page.formErrorSelect
   );
-  Ui.closeModal(
-    cancelButton,
-    formModal,
-    prescriptionSection,
-    otcSection,
-    formErrors
+  ui.closeModal(
+    page.cancelButton,
+    page.formModal,
+    page.prescriptionSection,
+    page.otcSection
   );
+  ui.renderDataOnClick(page.tabs);
 
-  Ui.closeModal(
-    deleteCancelButton,
-    deleteModal,
-    prescriptionSection,
-    prescriptionFields
-  );
-
-  Ui.renderDataOnClick(tabs);
-
-  typeField.addEventListener("change", () => {
-    Ui.toggleMedicineSection(
-      prescriptionSection,
-      prescriptionFields,
-      otcSection,
-      otcFields,
-      typeField
+  page.typeField.addEventListener("change", () => {
+    ui.toggleMedicineSection(
+      page.prescriptionSection,
+      page.prescriptionFields,
+      page.otcSection,
+      page.otcFields,
+      page.typeField
     );
   });
 
-  form.addEventListener("submit", (e) => {
+  page.form.addEventListener("submit", (e) => {
     e.preventDefault();
     let product = {
-      name: name.value.trim(),
-      manufacturer: manufacturer.value.trim(),
-      expiryDate: expiryDate.value.trim(),
-      quantity: quantity.value.trim(),
-      type: typeField.value.trim(),
-      age: age.value.trim(),
-      price: price.value.trim(),
-      dosage: dosage.value.trim(),
-      frequency: frequency.value.trim(),
+      name: page.name.value.trim(),
+      manufacturer: page.manufacturer.value.trim(),
+      expiryDate: page.expiryDate.value.trim(),
+      quantity: page.quantity.value.trim(),
+      type: page.typeField.value.trim(),
+      age: page.age.value.trim(),
+      price: page.price.value.trim(),
+      dosage: page.dosage.value.trim(),
+      frequency: page.frequency.value.trim(),
     };
 
-    if (formValidator(form)) {
-      formErrorSelect.style.display = "block";
-      if (form.dataset.mode === "add") {
+    if (formValidator(page)) {
+      page.formErrorSelect.style.visibility = "hidden";
+      if (page.form.dataset.mode === "add") {
         ClientController.addProduct(product);
-      } else if (form.dataset.mode === "edit") {
-        e;
-        product.id = Ui.currentProductId;
+      } else if (page.form.dataset.mode === "edit") {
+        product.id = ui.getProductID();
         ClientController.editProduct(product);
       } else {
         console.error("Invalid mode");
         return;
       }
-      Ui.closeOnSubmit(formModal, prescriptionSection, otcSection, formErrors);
-      Ui.renderData(Ui.currentTab);
+      ui.closeOnSubmit(
+        page.formModal,
+        page.prescriptionSection,
+        page.otcSection
+      );
+      ui.renderData(ui.currentTab);
     }
   });
 
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      formModal.style.display = "none";
-      if (prescriptionSection && otcSection) {
-        prescriptionSection.style.display = "none";
-        otcSection.style.display = "none";
-      }
-
-      formErrors.forEach((error) => {
-        error.style.display = "none";
-      });
-    }
-  });
-
-  search.addEventListener("keydown", (e) => {
+  page.searchInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
-      Ui.submitSearch(e.target.value);
+      ui.submitSearch(e.target.value);
     }
   });
-  searchReset.addEventListener("click", () => {
-    Ui.resetSearch();
+  page.searchReset.addEventListener("click", () => {
+    ui.resetSearch();
   });
 });
