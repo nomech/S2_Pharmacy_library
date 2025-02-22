@@ -1,10 +1,21 @@
 import ClientController from "./clientController";
+
 import editIcon from "../assets/icons/edit.svg";
 import deleteIcon from "../assets/icons/delete.svg";
 
 class Ui {
+  constructor(page) {
+    this.page = page;
+    this.currentProductId = null;
+    this.currentTab = "all";
+  }
+
+  getProductID() {
+    return this.currentProductId;
+  }
+
   // mothod to open modal
-  static openModal(
+  openModal(
     button,
     modal,
     submitEdit,
@@ -37,7 +48,7 @@ class Ui {
     });
   }
 
-  static openConfirmDeleteModal(id) {
+  openConfirmDeleteModal(id) {
     const openConfirmModal = document.querySelector(".button--delete");
     const confirmDelete = document.querySelector(".button--confirm");
     const confirmModal = document.querySelector(".delete-modal");
@@ -46,21 +57,14 @@ class Ui {
 
     confirmDelete.addEventListener("click", () => {
       ClientController.deleteProducts(id);
-      Ui.renderData(Ui.currentTab);
+      this.renderData(this.currentTab);
       confirmModal.style.display = "none";
     });
   }
 
-  static currentId = null;
-
-  static openEditModal(modal, product) {
-    const prescriptionSection = document.querySelector(
-      ".form__group--prescription"
-    );
-    const otcSection = document.querySelector(".form__group--otc");
-    const form = document.querySelector(".form");
-    form.dataset.mode = "edit";
-    Ui.currentProductId = product.id;
+  openEditModal(modal, product) {
+    this.page.form.dataset.mode = "edit";
+    this.currentProductId = product.id;
 
     modal.style.display = "flex";
 
@@ -73,18 +77,18 @@ class Ui {
     });
 
     if (product.type === "prescription") {
-      prescriptionSection.style.display = "inherit";
-      otcSection.style.display = "none";
+      this.page.prescriptionSection.style.display = "inherit";
+      this.page.otcSection.style.display = "none";
     } else if (product.type === "otc") {
-      otcSection.style.display = "inherit";
-      prescriptionSection.style.display = "none";
+      this.page.otcSection.style.display = "inherit";
+      this.page.prescriptionSection.style.display = "none";
     } else {
-      prescriptionSection.style.display = "none";
-      otcSection.style.display = "none";
+      this.page.prescriptionSection.style.display = "none";
+      this.page.otcSection.style.display = "none";
     }
   }
 
-  static closeModal(button, modal, prescriptionSection, otcSection) {
+  closeModal(button, modal, prescriptionSection, otcSection) {
     button.addEventListener("click", (e) => {
       e.preventDefault();
       modal.style.display = "none";
@@ -97,13 +101,13 @@ class Ui {
     });
   }
 
-  static closeOnSubmit(modal, prescriptionSection, otcSection) {
+  closeOnSubmit(modal, prescriptionSection, otcSection) {
     modal.style.display = "none";
     prescriptionSection.style.display = "none";
     otcSection.style.display = "none";
   }
 
-  static toggleMedicineSection(
+  toggleMedicineSection(
     prescriptionSection,
     prescriptionFields,
     otcSection,
@@ -130,7 +134,7 @@ class Ui {
   }
 
   //function that creates elements to be rendered
-  static createElements(data, mode) {
+  createElements(data, mode) {
     const dataContainer = document.querySelector(".data");
 
     dataContainer.innerHTML = "";
@@ -286,22 +290,20 @@ class Ui {
 
       // Event listeners
       editButton.addEventListener("click", () => {
-        Ui.openEditModal(formModal, product);
+        this.openEditModal(formModal, product);
         submitEdit.style.display = "flex";
         submitAdd.style.display = "none";
       });
 
       deleteButton.addEventListener("click", () => {
         confirmModal.style.display = "flex";
-        Ui.openConfirmDeleteModal(product.id);
+        this.openConfirmDeleteModal(product.id);
       });
     });
   }
 
-  static currentTab = "all";
-
   // renders data
-  static renderData(type) {
+  renderData(type) {
     const data = JSON.parse(localStorage.getItem("products")) || [];
     const allData = data ? data : [];
     const otcData = data.filter((item) => {
@@ -323,7 +325,7 @@ class Ui {
     }
   }
 
-  static renderDataOnClick(tabs) {
+  renderDataOnClick(tabs) {
     tabs.forEach((tab) => {
       tab.addEventListener("click", () => {
         // Removes any active tab indicator
@@ -332,10 +334,10 @@ class Ui {
             tab.classList.remove("tab--active");
         });
 
-        Ui.currentTab = tab.dataset.id;
+        this.currentTab = tab.dataset.id;
 
         //Renders data for the current tab.
-        Ui.renderData(tab.dataset.id);
+        this.renderData(tab.dataset.id);
 
         //Makes the current tab active
         tab.classList.add("tab--active");
@@ -343,11 +345,11 @@ class Ui {
     });
   }
 
-  static renderSearchData(data) {
-    Ui.createElements(data, "search");
+  renderSearchData(data) {
+    this.createElements(data, "search");
   }
 
-  static resetSearch() {
+  resetSearch() {
     const panelTitle = document.querySelector(".panel__title");
     const addButton = document.querySelector(".button--add");
     const searchPanel = document.querySelector(".panel__search");
@@ -363,10 +365,10 @@ class Ui {
     tabs.style.display = "flex";
     searchInput.value = "";
 
-    Ui.createElements(data);
+    this.createElements(data);
   }
 
-  static submitSearch(searchQuery) {
+  submitSearch(searchQuery) {
     const panelTitle = document.querySelector(".panel__title");
     const addButton = document.querySelector(".button--add");
     const searchPanel = document.querySelector(".panel__search");
@@ -378,7 +380,7 @@ class Ui {
       return product.name.toLowerCase().includes(searchQuery.toLowerCase());
     });
 
-    Ui.renderSearchData(results);
+    this.renderSearchData(results);
     queryText.innerText = `"${searchQuery}"`;
     if (searchQuery.length > 0) {
       addButton.style.display = "none";
@@ -387,7 +389,7 @@ class Ui {
       tabs.style.display = "none";
       resetButton.style.display = "flex";
     } else {
-      Ui.resetSearch();
+      this.resetSearch();
     }
   }
 }
