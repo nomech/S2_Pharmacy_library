@@ -78,7 +78,3 @@
   font-style: italic;
 }
 
-.form__input--frequency,
-.form__label--frequency {
-  grid-row: 2;
-}

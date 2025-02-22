@@ -9,7 +9,7 @@ const formValidator = (form) => {
           element.placeholder = `${element.name} is required`;
           isValid = false;
 
-          if (element.tagName === "SELECT") {
+          if (element.tagName === "SELECT" || element.type === `date`) {
             element.nextElementSibling.style.display = "block";
           }
         } else if (element.tagName === "SELECT") {
@@ -17,9 +17,7 @@ const formValidator = (form) => {
         }
         if (element.name === "type") {
           console.log(element.name);
-
           type = element.value;
-          console.log(type);
         }
       }
     }

@@ -13,18 +13,14 @@ class Ui {
     form,
     formErrorSelect
   ) {
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        modal.style.display = "none";
-      }
-    });
+
 
     button.addEventListener("click", () => {
       submitEdit.style.display = "none";
       submitAdd.style.display = "flex";
       form.dataset.mode = "add";
       modal.style.display = "flex";
-      formErrorSelect.style.display = "block";;
+      formErrorSelect.style.display = "block";
 
       inputFields.forEach((input) => {
         if (input.name !== "type") {
@@ -84,32 +80,31 @@ class Ui {
     }
   }
 
-  static closeModal(button, modal, prescriptionSection, otcSection) {
+  static closeModal(button,modal,prescriptionSection,otcSection,formErrors) {
     button.addEventListener("click", (e) => {
       e.preventDefault();
       modal.style.display = "none";
-      submitEdit.style.display = "none";
-      submitAdd.style.display = "flex";
       if (prescriptionSection && otcSection) {
         prescriptionSection.style.display = "none";
         otcSection.style.display = "none";
       }
+
+      formErrors.forEach((error) => {
+        error.style.display = "none";
+      });
     });
   }
 
-  static closeOnSubmit(modal, prescriptionSection, otcSection) {
+  static closeOnSubmit(modal, prescriptionSection, otcSection, formErrors) {
     modal.style.display = "none";
     prescriptionSection.style.display = "none";
     otcSection.style.display = "none";
+    formErrors.forEach((error) => {
+      error.style.display = "none";
+    });
   }
 
-  static toggleMedicineSection(
-    prescriptionSection,
-    prescriptionFields,
-    otcSection,
-    otcFields,
-    select
-  ) {
+  static toggleMedicineSection(prescriptionSection,prescriptionFields,otcSection, otcFields,select) {
     prescriptionSection.style.display = "none";
     otcSection.style.display = "none";
     prescriptionFields.forEach((field) => {

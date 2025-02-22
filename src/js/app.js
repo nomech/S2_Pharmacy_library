@@ -28,6 +28,8 @@ const prescriptionSection = document.querySelector(
   ".form__group--prescription"
 );
 
+const formErrors = document.querySelectorAll(".form__error");
+
 const prescriptionFields = [
   document.querySelector(".form__input--dosage"),
   document.querySelector(".form__input--frequency"),
@@ -58,7 +60,13 @@ document.addEventListener("DOMContentLoaded", () => {
     form,
     formErrorSelect
   );
-  Ui.closeModal(cancelButton, formModal, prescriptionSection, otcSection);
+  Ui.closeModal(
+    cancelButton,
+    formModal,
+    prescriptionSection,
+    otcSection,
+    formErrors
+  );
 
   Ui.closeModal(
     deleteCancelButton,
@@ -98,14 +106,29 @@ document.addEventListener("DOMContentLoaded", () => {
       if (form.dataset.mode === "add") {
         ClientController.addProduct(product);
       } else if (form.dataset.mode === "edit") {
+        e;
         product.id = Ui.currentProductId;
         ClientController.editProduct(product);
       } else {
         console.error("Invalid mode");
         return;
       }
-      Ui.closeOnSubmit(formModal, prescriptionSection, otcSection);
+      Ui.closeOnSubmit(formModal, prescriptionSection, otcSection, formErrors);
       Ui.renderData(Ui.currentTab);
+    }
+  });
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      formModal.style.display = "none";
+      if (prescriptionSection && otcSection) {
+        prescriptionSection.style.display = "none";
+        otcSection.style.display = "none";
+      }
+
+      formErrors.forEach((error) => {
+        error.style.display = "none";
+      });
     }
   });
 
