@@ -1,5 +1,6 @@
 import Ui from "./ui";
 import ClientController from "./clientController";
+import formValidator from "./formValidator";
 
 const showButton = document.querySelector(".button--show-form");
 const formModal = document.querySelector(".form-modal");
@@ -46,69 +47,6 @@ const submitEdit = document.querySelector(".button--submit-edit");
 const submitAdd = document.querySelector(".button--submit");
 const inputFields = document.querySelectorAll(".form__input");
 
-const formValidator = () => {
-  const nameValue = name.value.trim();
-  const manufacturerValue = manufacturer.value.trim();
-  const expiryDateValue = expiryDate.value.trim();
-  const quantityValue = quantity.value.trim();
-  const typeValue = typeField.value.trim();
-  const ageValue = age.value.trim();
-  const priceValue = price.value.trim();
-  const dosageValue = dosage.value.trim();
-  const frequencyValue = frequency.value.trim();
-
-  let isValid = true;
-  if (!nameValue) {
-    name.placeholder = "Name is reqired";
-    isValid = false;
-  }
-
-  if (!manufacturerValue) {
-    manufacturer.placeholder = "Manufacturer is reqired";
-    isValid = false;
-  }
-
-  if (!expiryDateValue) {
-    expiryDate.placeholder = "Name is reqired";
-    isValid = false;
-  }
-
-  if (!quantityValue) {
-    quantity.placeholder = "Quantity is reqired";
-    isValid = false;
-  }
-
-  if (typeValue === "none") {
-    formErrorSelect.style.visibility = "visible";
-    isValid = false;
-  }
-
-  if (typeValue === "otc") {
-    if (!ageValue) {
-      age.placeholder = "Age is reqired";
-      isValid = false;
-    }
-
-    if (!priceValue) {
-      price.placeholder = "Price is reqired";
-      isValid = false;
-    }
-  }
-
-  if (typeValue === "prescription") {
-    if (!dosageValue) {
-      dosage.placeholder = "Dosage is reqired";
-      isValid = false;
-    }
-
-    if (!frequencyValue) {
-      frequency.placeholder = "Frequency is reqired";
-      isValid = false;
-    }
-  }
-  return isValid;
-};
-
 document.addEventListener("DOMContentLoaded", () => {
   Ui.renderData("all");
   Ui.openModal(
@@ -121,8 +59,6 @@ document.addEventListener("DOMContentLoaded", () => {
     formErrorSelect
   );
   Ui.closeModal(cancelButton, formModal, prescriptionSection, otcSection);
-
-
 
   Ui.closeModal(
     deleteCancelButton,
@@ -157,8 +93,8 @@ document.addEventListener("DOMContentLoaded", () => {
       frequency: frequency.value.trim(),
     };
 
-    if (formValidator()) {
-      formErrorSelect.style.visibility = "hidden";
+    if (formValidator(form)) {
+      formErrorSelect.style.display = "block";
       if (form.dataset.mode === "add") {
         ClientController.addProduct(product);
       } else if (form.dataset.mode === "edit") {

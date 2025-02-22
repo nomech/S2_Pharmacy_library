@@ -24,7 +24,7 @@ class Ui {
       submitAdd.style.display = "flex";
       form.dataset.mode = "add";
       modal.style.display = "flex";
-      formErrorSelect.style.visibility = "hidden";
+      formErrorSelect.style.display = "block";;
 
       inputFields.forEach((input) => {
         if (input.name !== "type") {

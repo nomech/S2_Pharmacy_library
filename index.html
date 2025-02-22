@@ -82,29 +82,31 @@
         <form action="" class="form">
           <div class="form__group">
             <label class="form__label" for="name">Product name</label>
-            <input class="form__input form__input--name" type="text" id="name" name="name" />
+            <input class="form__input form__input--name" type="text" id="name" name="name" data-type="common" />
           </div>
           <div class="form__group">
             <label class="form__label" for="manufacturer">Manufacturer</label>
-            <input class="form__input form__input--manufacturer" type="text" id="manufacturer" name="manufacturer" />
+            <input class="form__input form__input--manufacturer" type="text" id="manufacturer" name="manufacturer"
+              data-type="common" />
           </div>
           <div class="form__group">
             <label class="form__label" for="expiry">Expiry Date</label>
-            <input class="form__input form__input--expire" type="date" id="expiryDate" name="expiryDate" />
+            <input class="form__input form__input--expire" type="date" id="expiryDate" name="expiryDate"
+              data-type="common" />
           </div>
           <div class="form__group">
             <label class="form__label" for="quantity">Quantity</label>
             <input class="form__input form__input--quantity" type="number" id="quantity" name="quantity" min="0"
-              max="9999" />
+              max="9999" data-type="common" />
           </div>
           <div class="form__group">
             <label class="form__label" for="type">Type</label>
-            <select class="form__input form__input--type" name="type" id="type">
+            <select class="form__input form__input--type" name="type" id="type" data-type="common">
               <option value="none">Select type</option>
               <option value="prescription">Prescription</option>
               <option value="otc">Over the counter</option>
             </select>
-            <p class="form__error form__error--select">You need to select a type</p>
+            <p class="form__error form__error--type">You need to select a type</p>
           </div>
 
           <!-- Prescription form section -->
@@ -120,6 +122,7 @@
               <option value="500">500mg</option>
               <option value="1000">1000mg</option>
             </select>
+            <p class="form__error form__error--dosage">You need to select a doseage</p>
 
             <label class="form__label form__label--frequency" for="frequency">Frequency</label>
             <select class="form__input form__input--frequency" type="text" name="frequency" id="frequency"
@@ -129,7 +132,7 @@
               <option value="3">Once a week</option>
               <option value="4">Twice a week</option>
             </select>
-
+            <p class="form__error form__error--frequency">You need to select frequency</p>
           </div>
 
           <!-- OTC form section -->
@@ -140,6 +143,7 @@
               <option value="18">18+</option>
               <option value="21">21+</option>
             </select>
+            <p class="form__error form__error--select">You need to select an option</p>
 
             <label class="form__label" for="price">Price</label>
             <input class="form__input form__input--price" type="number" name="price" id="price" data-type="otc" />
