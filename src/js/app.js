@@ -45,21 +45,14 @@ const formErrorSelect = document.querySelector(".form__error--select");
 
 const search = document.querySelector(".nav__search-input");
 const searchReset = document.querySelector(".button--reset");
-const submitEdit = document.querySelector(".button--submit-edit");
+
 const submitAdd = document.querySelector(".button--submit");
 const inputFields = document.querySelectorAll(".form__input");
 
 document.addEventListener("DOMContentLoaded", () => {
   Ui.renderData("all");
-  Ui.openModal(
-    showButton,
-    formModal,
-    submitEdit,
-    inputFields,
-    submitAdd,
-    form,
-    formErrorSelect
-  );
+  Ui.openModalOnClick(showButton);
+  //Ui.openModal(showButton,formModal,submitEdit,inputFields,submitAdd,form,formErrorSelect);
   Ui.closeModal(
     cancelButton,
     formModal,
@@ -67,7 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
     otcSection,
     formErrors
   );
-
   Ui.closeModal(
     deleteCancelButton,
     deleteModal,

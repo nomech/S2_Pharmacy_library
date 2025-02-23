@@ -3,8 +3,73 @@ import editIcon from "../assets/icons/edit.svg";
 import deleteIcon from "../assets/icons/delete.svg";
 
 class Ui {
+  static openModalOnClick(button) {
+    button.addEventListener("click", () => {
+      Ui.openModal(button.dataset.method);
+    });
+  }
+
+  static openModal(method) {
+    const form = document.querySelector(".form");
+    const formModal = document.querySelector(".form-modal");
+    const submitAdd = document.querySelector(".button--submit");
+    const submitEdit = document.querySelector(".button--submit-edit");
+    const deleteModal = document.querySelector(".delete-modal");
+
+    if (method === "add") {
+      formModal.style.display = "flex";
+      form.dataset.mode = "add";
+      submitEdit.style.display = "none";
+      submitAdd.style.display = "flex";
+
+      for (let element of form) {
+        if (element.classList.contains("form__input"))
+          if (element.name !== "type") {
+            console.log(element);
+            element.value = "";
+            element.placeholder = "";
+          } else {
+            element.value = "none";
+          }
+        if (element.classList.contains(".form__error")) {
+          element.style.display = "none";
+        }
+      }
+    }
+    if (method === "edit") {
+      const prescriptionSection = document.querySelector(
+        ".form__group--prescription"
+      );
+      const otcSection = document.querySelector(".form__group--otc");
+      const form = document.querySelector(".form");
+      form.dataset.mode = "edit";
+      Ui.currentProductId = product.id;
+
+      modal.style.display = "flex";
+
+      const inputFields = document.querySelectorAll(".form__input");
+
+      inputFields.forEach((input) => {
+        if (product.hasOwnProperty(input.name)) {
+          input.value = product[input.name];
+        }
+      });
+
+      if (product.type === "prescription") {
+        prescriptionSection.style.display = "inherit";
+        otcSection.style.display = "none";
+      } else if (product.type === "otc") {
+        otcSection.style.display = "inherit";
+        prescriptionSection.style.display = "none";
+      } else {
+        prescriptionSection.style.display = "none";
+        otcSection.style.display = "none";
+      }
+    }
+  }
+
   // mothod to open modal
-  static openModal(
+  s; /* tatic openModal(
     button,
     modal,
     submitEdit,
@@ -13,7 +78,9 @@ class Ui {
     form,
     formErrorSelect
   ) {
-
+    for (let element of form) {
+      if (element.classList.contains("form__input")) console.log(element);
+    }
 
     button.addEventListener("click", () => {
       submitEdit.style.display = "none";
@@ -31,7 +98,7 @@ class Ui {
         }
       });
     });
-  }
+  } */
 
   static openConfirmDeleteModal(id) {
     const openConfirmModal = document.querySelector(".button--delete");
@@ -80,7 +147,13 @@ class Ui {
     }
   }
 
-  static closeModal(button,modal,prescriptionSection,otcSection,formErrors) {
+  static closeModal(
+    button,
+    modal,
+    prescriptionSection,
+    otcSection,
+    formErrors
+  ) {
     button.addEventListener("click", (e) => {
       e.preventDefault();
       modal.style.display = "none";
@@ -104,7 +177,13 @@ class Ui {
     });
   }
 
-  static toggleMedicineSection(prescriptionSection,prescriptionFields,otcSection, otcFields,select) {
+  static toggleMedicineSection(
+    prescriptionSection,
+    prescriptionFields,
+    otcSection,
+    otcFields,
+    select
+  ) {
     prescriptionSection.style.display = "none";
     otcSection.style.display = "none";
     prescriptionFields.forEach((field) => {
@@ -220,6 +299,8 @@ class Ui {
       expLabel.innerText = "Exp: ";
       expText.innerText = `${product.expiryDate}`;
 
+      editButton.dataset.method = "edit";
+
       let ageData = "";
       if (product.age === "none") {
         ageData = "No age restriction";
@@ -270,6 +351,7 @@ class Ui {
 
       // Append all elements to card
       cardHeader.append(cardTitle);
+
       //cardText.append(mfr, exp, age, price);
       cardDataGroup.append(cardHeader, cardText);
       editButton.append(editImg, `Edit`);
@@ -279,12 +361,14 @@ class Ui {
       card.append(cardlabel, cardDataGroup, cardFooter);
       dataContainer.append(card);
 
+      Ui.openModalOnClick(editButton);
       // Event listeners
-      editButton.addEventListener("click", () => {
+      /*       editButton.addEventListener("click", () => {
         Ui.openEditModal(formModal, product);
+        
         submitEdit.style.display = "flex";
         submitAdd.style.display = "none";
-      });
+      }); */
 
       deleteButton.addEventListener("click", () => {
         confirmModal.style.display = "flex";
