@@ -3,17 +3,24 @@ import editIcon from "../assets/icons/edit.svg";
 import deleteIcon from "../assets/icons/delete.svg";
 
 class Ui {
-  static openModalOnClick(button) {
+  static openModalOnClick(button, product) {
     button.addEventListener("click", () => {
-      Ui.openModal(button.dataset.method);
+      Ui.openModal(button.dataset.method, product);
     });
   }
 
-  static openModal(method) {
+  static openModal(method, product) {
     const form = document.querySelector(".form");
     const formModal = document.querySelector(".form-modal");
     const submitAdd = document.querySelector(".button--submit");
     const submitEdit = document.querySelector(".button--submit-edit");
+    const prescriptionSection = document.querySelector(
+      ".form__group--prescription"
+    );
+    const otcSection = document.querySelector(".form__group--otc");
+    const confirmDelete = document.querySelector(
+      ".delete-modal__button--delete"
+    );
     const deleteModal = document.querySelector(".delete-modal");
 
     if (method === "add") {
@@ -35,25 +42,15 @@ class Ui {
           element.style.display = "none";
         }
       }
-    }
-    if (method === "edit") {
-      const prescriptionSection = document.querySelector(
-        ".form__group--prescription"
-      );
-      const otcSection = document.querySelector(".form__group--otc");
-      const form = document.querySelector(".form");
+    } else if (method === "edit") {
       form.dataset.mode = "edit";
       Ui.currentProductId = product.id;
 
-      modal.style.display = "flex";
+      formModal.style.display = "flex";
 
-      const inputFields = document.querySelectorAll(".form__input");
-
-      inputFields.forEach((input) => {
-        if (product.hasOwnProperty(input.name)) {
-          input.value = product[input.name];
-        }
-      });
+      for (let element of form) {
+        element.value = product[element.name];
+      }
 
       if (product.type === "prescription") {
         prescriptionSection.style.display = "inherit";
@@ -65,135 +62,18 @@ class Ui {
         prescriptionSection.style.display = "none";
         otcSection.style.display = "none";
       }
-    }
-  }
-
-  // mothod to open modal
-  s; /* tatic openModal(
-    button,
-    modal,
-    submitEdit,
-    inputFields,
-    submitAdd,
-    form,
-    formErrorSelect
-  ) {
-    for (let element of form) {
-      if (element.classList.contains("form__input")) console.log(element);
-    }
-
-  constructor(page) {
-    this.page = page;
-    this.currentProductId = null;
-    this.currentTab = "all";
-  }
-
-  openModalOnClick(button, product) {
-    button.addEventListener("click", () => {
-      submitEdit.style.display = "none";
-      submitAdd.style.display = "flex";
-      form.dataset.mode = "add";
-      modal.style.display = "flex";
-      formErrorSelect.style.display = "block";
-
-      inputFields.forEach((input) => {
-        if (input.name !== "type") {
-          input.value = "";
-          input.placeholder = "";
-        } else {
-          input.value = "none";
-        }
+    } else if (method === "confirm-delete") {
+      deleteModal.style.display = "flex";
+      confirmDelete.addEventListener("click", () => {
+        ClientController.deleteProducts(product.id);
+        Ui.renderData(Ui.currentTab);
+        deleteModal.style.display = "none";
       });
-    });
-  } */
-
-  static openConfirmDeleteModal(id) {
-    const openConfirmModal = document.querySelector(".button--delete");
-    const confirmDelete = document.querySelector(".button--confirm");
-    const confirmModal = document.querySelector(".delete-modal");
-
-    openConfirmModal.addEventListener("click", () => {});
-
-    confirmDelete.addEventListener("click", () => {
-      ClientController.deleteProducts(id);
-      Ui.renderData(Ui.currentTab);
-      confirmModal.style.display = "none";
-    });
+    }
   }
+
 
   static currentId = null;
-
-  static openEditModal(modal, product) {
-    const prescriptionSection = document.querySelector(
-      ".form__group--prescription"
-    );
-    const otcSection = document.querySelector(".form__group--otc");
-    const form = document.querySelector(".form");
-    form.dataset.mode = "edit";
-    Ui.currentProductId = product.id;
-
-    modal.style.display = "flex";
-
-    const inputFields = document.querySelectorAll(".form__input");
-
-    inputFields.forEach((input) => {
-      if (product.hasOwnProperty(input.name)) {
-        input.value = product[input.name];
-      this.openModal(button.dataset.method, product);
-    });
-  }
-
-  getProductID() {
-    return this.currentProductId;
-  }
-
-  setProductId(id) {
-    this.currentProductId = id;
-  }
-
-  openModal(method, product) {
-    if (method === "add") {
-      this.page.formModal.style.display = "flex";
-      this.page.form.dataset.mode = "add";
-      this.page.submitEdit.style.display = "none";
-      this.page.submitAdd.style.display = "flex";
-
-      for (let element of this.page.form) {
-        if (element.classList.contains("form__input"))
-          if (element.name !== "type") {
-            element.value = "";
-            element.placeholder = "";
-          } else {
-            element.value = "none";
-          }
-        if (element.classList.contains(".form__error")) {
-          element.style.display = "none";
-        }
-      }
-    } else if (method === "edit") {
-      this.setProductId(product.id);
-      console.log(this.currentProductId);
-      this.page.form.dataset.mode = "edit";
-      this.page.submitEdit.style.display = "flex";
-      this.page.submitAdd.style.display = "none";
-      this.page.formModal.style.display = "flex";
-
-      for (let element of this.page.form) {
-        element.value = product[element.name];
-      }
-    
-
-    if (product.type === "prescription") {
-      prescriptionSection.style.display = "inherit";
-      otcSection.style.display = "none";
-    } else if (product.type === "otc") {
-      otcSection.style.display = "inherit";
-      prescriptionSection.style.display = "none";
-    } else {
-      prescriptionSection.style.display = "none";
-      otcSection.style.display = "none";
-    }
-  }
 
   static closeModal(
     button,
@@ -299,12 +179,7 @@ class Ui {
     }
 
     data.forEach((product) => {
-      // Query selectors
-      const formModal = document.querySelector(".form-modal");
-      const submitEdit = document.querySelector(".button--submit-edit");
-      const submitAdd = document.querySelector(".button--submit");
-      const confirmModal = document.querySelector(".delete-modal");
-
+      
       // Create elements
       const card = document.createElement("div");
       const cardDataGroup = document.createElement("div");
@@ -379,6 +254,7 @@ class Ui {
       expText.innerText = `${product.expiryDate}`;
 
       editButton.dataset.method = "edit";
+      deleteButton.dataset.method = "confirm-delete";
 
       let ageData = "";
       if (product.age === "none") {
@@ -440,7 +316,8 @@ class Ui {
       card.append(cardlabel, cardDataGroup, cardFooter);
       dataContainer.append(card);
 
-      Ui.openModalOnClick(editButton);
+      Ui.openModalOnClick(editButton, product);
+      Ui.openModalOnClick(deleteButton, product);
       // Event listeners
       /*       editButton.addEventListener("click", () => {
         Ui.openEditModal(formModal, product);
@@ -449,10 +326,11 @@ class Ui {
         submitAdd.style.display = "none";
       }); */
 
-      deleteButton.addEventListener("click", () => {
-        confirmModal.style.display = "flex";
-        Ui.openConfirmDeleteModal(product.id);
-      });
+      /*  deleteButton.addEventListener("click", () => {
+       */ //this.openModal(deleteButton.dataset.method, product);
+      /*         confirmModal.style.display = "flex";
+        Ui.openConfirmDeleteModal(product.id); */
+      // });
     });
   }
 
