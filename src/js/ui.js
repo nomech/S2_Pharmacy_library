@@ -72,7 +72,6 @@ class Ui {
     }
   }
 
-
   static currentId = null;
 
   static closeModal(
@@ -179,7 +178,6 @@ class Ui {
     }
 
     data.forEach((product) => {
-      
       // Create elements
       const card = document.createElement("div");
       const cardDataGroup = document.createElement("div");
