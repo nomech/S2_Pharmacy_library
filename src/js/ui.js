@@ -72,38 +72,34 @@ class Ui {
     }
   }
 
-
   static currentId = null;
 
-  static closeModal(
-    button,
-    modal,
-    prescriptionSection,
-    otcSection,
-    formErrors
-  ) {
+  static closeModalTest(button) {
+    const prescriptionSection = document.querySelector(
+      ".form__group--prescription"
+    );
+    const otcSection = document.querySelector(".form__group--otc");
+    const formErrors = document.querySelectorAll(".form__error");
+    const method = button.dataset.method;
+    let modal;
+
+    if (method === "cancel-form") {
+      modal = document.querySelector(".form-modal");
+    } else if (method === "cancel-delete") {
+      modal = document.querySelector(".delete-modal");
+    }
+
     button.addEventListener("click", (e) => {
       e.preventDefault();
       modal.style.display = "none";
-      if (prescriptionSection && otcSection) {
-        prescriptionSection.style.display = "none";
-        otcSection.style.display = "none";
-      }
-
+      prescriptionSection.style.display = "none";
+      otcSection.style.display = "none";
       formErrors.forEach((error) => {
         error.style.display = "none";
       });
     });
   }
 
-  static closeOnSubmit(modal, prescriptionSection, otcSection, formErrors) {
-    modal.style.display = "none";
-    prescriptionSection.style.display = "none";
-    otcSection.style.display = "none";
-    formErrors.forEach((error) => {
-      error.style.display = "none";
-    });
-  }
 
   static toggleMedicineSection(
     prescriptionSection,
@@ -148,7 +144,6 @@ class Ui {
     }
 
     data.forEach((product) => {
-      
       // Create elements
       const card = document.createElement("div");
       const cardDataGroup = document.createElement("div");

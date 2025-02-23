@@ -5,7 +5,6 @@ import formValidator from "./formValidator";
 const showButton = document.querySelector(".button--show-form");
 const formModal = document.querySelector(".form-modal");
 const form = document.querySelector(".form");
-const deleteButton = document.querySelector(".button--delete");
 const deleteModal = document.querySelector(".delete-modal");
 
 const cancelButton = document.querySelector(".button--cancel");
@@ -46,27 +45,11 @@ const formErrorSelect = document.querySelector(".form__error--select");
 const search = document.querySelector(".nav__search-input");
 const searchReset = document.querySelector(".button--reset");
 
-const submitAdd = document.querySelector(".button--submit");
-const inputFields = document.querySelectorAll(".form__input");
-
 document.addEventListener("DOMContentLoaded", () => {
   Ui.renderData("all");
   Ui.openModalOnClick(showButton);
-  //Ui.openModal(showButton,formModal,submitEdit,inputFields,submitAdd,form,formErrorSelect);
-  Ui.closeModal(
-    cancelButton,
-    formModal,
-    prescriptionSection,
-    otcSection,
-    formErrors
-  );
-  Ui.closeModal(
-    deleteCancelButton,
-    deleteModal,
-    prescriptionSection,
-    prescriptionFields
-  );
-
+  Ui.closeModalTest(cancelButton);
+  Ui.closeModalTest(deleteCancelButton);
   Ui.renderDataOnClick(tabs);
 
   typeField.addEventListener("change", () => {
