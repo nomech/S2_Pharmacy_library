@@ -1,5 +1,4 @@
 import ClientController from "./clientController";
-
 import editIcon from "../assets/icons/edit.svg";
 import deleteIcon from "../assets/icons/delete.svg";
 
@@ -10,101 +9,97 @@ class Ui {
     this.currentTab = "all";
   }
 
+  openModalOnClick(button, product) {
+    button.addEventListener("click", () => {
+      this.openModal(button.dataset.method, product);
+    });
+  }
+
   getProductID() {
     return this.currentProductId;
   }
 
-  // mothod to open modal
-  openModal(
-    button,
-    modal,
-    submitEdit,
-    inputFields,
-    submitAdd,
-    form,
-    formErrorSelect
-  ) {
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        modal.style.display = "none";
-      }
-    });
+  setProductId(id) {
+    this.currentProductId = id;
+  }
 
-    button.addEventListener("click", () => {
-      submitEdit.style.display = "none";
-      submitAdd.style.display = "flex";
-      form.dataset.mode = "add";
-      modal.style.display = "flex";
-      formErrorSelect.style.visibility = "hidden";
+  openModal(method, product) {
+    if (method === "add") {
+      this.page.formModal.style.display = "flex";
+      this.page.form.dataset.mode = "add";
+      this.page.submitEdit.style.display = "none";
+      this.page.submitAdd.style.display = "flex";
 
-      inputFields.forEach((input) => {
-        if (input.name !== "type") {
-          input.value = "";
-          input.placeholder = "";
-        } else {
-          input.value = "none";
+      for (let element of this.page.form) {
+        if (element.classList.contains("form__input"))
+          if (element.name !== "type") {
+            element.value = "";
+            element.placeholder = "";
+          } else {
+            element.value = "none";
+          }
+        if (element.classList.contains(".form__error")) {
+          element.style.display = "none";
         }
-      });
-    });
-  }
-
-  openConfirmDeleteModal(id) {
-    const openConfirmModal = document.querySelector(".button--delete");
-    const confirmDelete = document.querySelector(".button--confirm");
-    const confirmModal = document.querySelector(".delete-modal");
-
-    openConfirmModal.addEventListener("click", () => {});
-
-    confirmDelete.addEventListener("click", () => {
-      ClientController.deleteProducts(id);
-      this.renderData(this.currentTab);
-      confirmModal.style.display = "none";
-    });
-  }
-
-  openEditModal(modal, product) {
-    this.page.form.dataset.mode = "edit";
-    this.currentProductId = product.id;
-
-    modal.style.display = "flex";
-
-    const inputFields = document.querySelectorAll(".form__input");
-
-    inputFields.forEach((input) => {
-      if (product.hasOwnProperty(input.name)) {
-        input.value = product[input.name];
       }
-    });
+    } else if (method === "edit") {
+      this.setProductId(product.id);
+      console.log(this.currentProductId);
+      this.page.form.dataset.mode = "edit";
+      this.page.submitEdit.style.display = "flex";
+      this.page.submitAdd.style.display = "none";
+      this.page.formModal.style.display = "flex";
 
-    if (product.type === "prescription") {
-      this.page.prescriptionSection.style.display = "inherit";
-      this.page.otcSection.style.display = "none";
-    } else if (product.type === "otc") {
-      this.page.otcSection.style.display = "inherit";
-      this.page.prescriptionSection.style.display = "none";
-    } else {
-      this.page.prescriptionSection.style.display = "none";
-      this.page.otcSection.style.display = "none";
+      for (let element of this.page.form) {
+        element.value = product[element.name];
+      }
+    
+
+      if (product.type === "prescription") {
+        this.page.prescriptionSection.style.display = "inherit";
+        this.page.otcSection.style.display = "none";
+      } else if (product.type === "otc") {
+        this.page.otcSection.style.display = "inherit";
+        this.page.prescriptionSection.style.display = "none";
+      } else {
+        this.page.prescriptionSection.style.display = "none";
+        this.page.otcSection.style.display = "none";
+      }
+    } else if (method === "confirm-delete") {
+      this.page.deleteModal.style.display = "flex";
+      this.page.confirmDelete.addEventListener("click", () => {
+        ClientController.deleteProducts(product.id);
+        this.page.deleteModal.style.display = "none";
+        this.renderData(this.currentTab);
+      });
     }
   }
 
-  closeModal(button, modal, prescriptionSection, otcSection) {
+  static currentId = null;
+
+  closeModal(button) {
     button.addEventListener("click", (e) => {
+      console.log("closing");
       e.preventDefault();
-      modal.style.display = "none";
-      submitEdit.style.display = "none";
-      submitAdd.style.display = "flex";
-      if (prescriptionSection && otcSection) {
-        prescriptionSection.style.display = "none";
-        otcSection.style.display = "none";
-      }
+      this.closeModalOnClick(button);
     });
   }
 
-  closeOnSubmit(modal, prescriptionSection, otcSection) {
+  closeModalOnClick(button) {
+    const method = button.dataset.method;
+    let modal;
+    if (method === "cancel-form" || method === "submit") {
+      modal = this.page.formModal;
+    } else if (method === "cancel-delete") {
+      modal = this.page.confirmModal;
+    }
+
     modal.style.display = "none";
-    prescriptionSection.style.display = "none";
-    otcSection.style.display = "none";
+    this.page.prescriptionSection.style.display = "none";
+    this.page.otcSection.style.display = "none";
+    this.page.formErrors.forEach((error) => {
+      error.style.display = "none";
+    });
   }
 
   toggleMedicineSection(
@@ -288,17 +283,8 @@ class Ui {
       card.append(cardlabel, cardDataGroup, cardFooter);
       dataContainer.append(card);
 
-      // Event listeners
-      editButton.addEventListener("click", () => {
-        this.openEditModal(formModal, product);
-        submitEdit.style.display = "flex";
-        submitAdd.style.display = "none";
-      });
-
-      deleteButton.addEventListener("click", () => {
-        confirmModal.style.display = "flex";
-        this.openConfirmDeleteModal(product.id);
-      });
+      this.openModalOnClick(editButton, product);
+      this.openModalOnClick(deleteButton, product);
     });
   }
 
@@ -321,7 +307,7 @@ class Ui {
     } else if (type === "prescription") {
       this.createElements(prescriptionData);
     } else {
-      console.error("Invalid type");
+      console.error("Unable to render: Invalid type");
     }
   }
 
