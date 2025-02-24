@@ -53,7 +53,6 @@ class Ui {
       for (let element of this.page.form) {
         element.value = product[element.name];
       }
-    
 
       if (product.type === "prescription") {
         this.page.prescriptionSection.style.display = "inherit";
@@ -145,12 +144,6 @@ class Ui {
     }
 
     data.forEach((product) => {
-      // Query selectors
-      const formModal = document.querySelector(".form-modal");
-      const submitEdit = document.querySelector(".button--submit-edit");
-      const submitAdd = document.querySelector(".button--submit");
-      const confirmModal = document.querySelector(".delete-modal");
-
       // Create elements
       const card = document.createElement("div");
       const cardDataGroup = document.createElement("div");
@@ -224,6 +217,9 @@ class Ui {
       expLabel.innerText = "Exp: ";
       expText.innerText = `${product.expiryDate}`;
 
+      editButton.dataset.method = "edit";
+      deleteButton.dataset.method = "confirm-delete";
+
       let ageData = "";
       if (product.age === "none") {
         ageData = "No age restriction";
@@ -274,6 +270,7 @@ class Ui {
 
       // Append all elements to card
       cardHeader.append(cardTitle);
+
       //cardText.append(mfr, exp, age, price);
       cardDataGroup.append(cardHeader, cardText);
       editButton.append(editImg, `Edit`);
