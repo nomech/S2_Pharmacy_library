@@ -49,38 +49,41 @@ const search = document.querySelector(".nav__search-input");
 const searchReset = document.querySelector(".button--reset");
 
 document.addEventListener("DOMContentLoaded", () => {
+  const page = new PageElements();
+  const ui = new Ui(page);
+  ui.renderData("all");
   Ui.renderData("all");
   Ui.openModalOnClick(showButton);
   Ui.closeModal(cancelButton);
   Ui.closeModal(deleteCancelButton);
   Ui.renderDataOnClick(tabs);
 
-  typeField.addEventListener("change", () => {
-    Ui.toggleMedicineSection(
-      prescriptionSection,
-      prescriptionFields,
-      otcSection,
-      otcFields,
-      typeField
+  page.typeField.addEventListener("change", () => {
+    ui.toggleMedicineSection(
+      page.prescriptionSection,
+      page.prescriptionFields,
+      page.otcSection,
+      page.otcFields,
+      page.typeField
     );
   });
 
-  form.addEventListener("submit", (e) => {
+  page.form.addEventListener("submit", (e) => {
     e.preventDefault();
     let product = {
-      name: name.value.trim(),
-      manufacturer: manufacturer.value.trim(),
-      expiryDate: expiryDate.value.trim(),
-      quantity: quantity.value.trim(),
-      type: typeField.value.trim(),
-      age: age.value.trim(),
-      price: price.value.trim(),
-      dosage: dosage.value.trim(),
-      frequency: frequency.value.trim(),
+      name: page.name.value.trim(),
+      manufacturer: page.manufacturer.value.trim(),
+      expiryDate: page.expiryDate.value.trim(),
+      quantity: page.quantity.value.trim(),
+      type: page.typeField.value.trim(),
+      age: page.age.value.trim(),
+      price: page.price.value.trim(),
+      dosage: page.dosage.value.trim(),
+      frequency: page.frequency.value.trim(),
     };
 
     if (formValidator(form)) {
-      formErrorSelect.style.display = "block";
+      page.formErrorSelect.style.display = "block";
       if (form.dataset.mode === "add") {
         ClientController.addProduct(product);
       } else if (form.dataset.mode === "edit") {
@@ -98,26 +101,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      formModal.style.display = "none";
-      if (prescriptionSection && otcSection) {
-        prescriptionSection.style.display = "none";
-        otcSection.style.display = "none";
-      }
-
-      formErrors.forEach((error) => {
-        error.style.display = "none";
-      });
-    }
-  });
-
-  search.addEventListener("keydown", (e) => {
+  page.searchInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
-      Ui.submitSearch(e.target.value);
+      ui.submitSearch(e.target.value);
     }
   });
-  searchReset.addEventListener("click", () => {
-    Ui.resetSearch();
+  page.searchReset.addEventListener("click", () => {
+    ui.resetSearch();
   });
 });

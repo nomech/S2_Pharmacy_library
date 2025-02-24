@@ -1,4 +1,5 @@
 import ClientController from "./clientController";
+
 import editIcon from "../assets/icons/edit.svg";
 import deleteIcon from "../assets/icons/delete.svg";
 
@@ -134,7 +135,7 @@ class Ui {
   }
 
   //function that creates elements to be rendered
-  static createElements(data, mode) {
+  createElements(data, mode) {
     const dataContainer = document.querySelector(".data");
 
     dataContainer.innerHTML = "";
@@ -294,7 +295,7 @@ class Ui {
   static currentTab = "all";
 
   // renders data
-  static renderData(type) {
+  renderData(type) {
     const data = JSON.parse(localStorage.getItem("products")) || [];
     const allData = data ? data : [];
     const otcData = data.filter((item) => {
@@ -316,7 +317,7 @@ class Ui {
     }
   }
 
-  static renderDataOnClick(tabs) {
+  renderDataOnClick(tabs) {
     tabs.forEach((tab) => {
       tab.addEventListener("click", () => {
         // Removes any active tab indicator
@@ -325,10 +326,10 @@ class Ui {
             tab.classList.remove("tab--active");
         });
 
-        Ui.currentTab = tab.dataset.id;
+        this.currentTab = tab.dataset.id;
 
         //Renders data for the current tab.
-        Ui.renderData(tab.dataset.id);
+        this.renderData(tab.dataset.id);
 
         //Makes the current tab active
         tab.classList.add("tab--active");
@@ -336,11 +337,11 @@ class Ui {
     });
   }
 
-  static renderSearchData(data) {
-    Ui.createElements(data, "search");
+  renderSearchData(data) {
+    this.createElements(data, "search");
   }
 
-  static resetSearch() {
+  resetSearch() {
     const panelTitle = document.querySelector(".panel__title");
     const addButton = document.querySelector(".button--add");
     const searchPanel = document.querySelector(".panel__search");
@@ -356,10 +357,10 @@ class Ui {
     tabs.style.display = "flex";
     searchInput.value = "";
 
-    Ui.createElements(data);
+    this.createElements(data);
   }
 
-  static submitSearch(searchQuery) {
+  submitSearch(searchQuery) {
     const panelTitle = document.querySelector(".panel__title");
     const addButton = document.querySelector(".button--add");
     const searchPanel = document.querySelector(".panel__search");
@@ -371,7 +372,7 @@ class Ui {
       return product.name.toLowerCase().includes(searchQuery.toLowerCase());
     });
 
-    Ui.renderSearchData(results);
+    this.renderSearchData(results);
     queryText.innerText = `"${searchQuery}"`;
     if (searchQuery.length > 0) {
       addButton.style.display = "none";
@@ -380,7 +381,7 @@ class Ui {
       tabs.style.display = "none";
       resetButton.style.display = "flex";
     } else {
-      Ui.resetSearch();
+      this.resetSearch();
     }
   }
 }
