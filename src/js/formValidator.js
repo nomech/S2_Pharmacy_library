@@ -1,6 +1,7 @@
-const formValidator = (form) => {
+const formValidator = (form, mode) => {
   let type = "common";
   let isValid = true;
+  const productData = {};
 
   for (let element of form) {
     if (element.tagName === "INPUT" || element.tagName === "SELECT") {
@@ -20,9 +21,30 @@ const formValidator = (form) => {
         }
       }
     }
+    if (
+      element.name === "name" ||
+      element.name === "manufacturer" ||
+      element.name === "type"
+    ) {
+      productData[element.name] = element.value.toLowerCase();
+    }
   }
-  console.log(isValid);
-  return isValid;
+
+  const duplicateCheck = ChcekExistingDataForDuplicates(productData);
+  return { duplicateCheck, isValid };
 };
 
+const ChcekExistingDataForDuplicates = (data) => {
+  let duplicatesFound = false;
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+
+  products.forEach((product) => {
+    if (Object.keys(data).every((key) => 
+      data[key] === product[key].toLowerCase())) {
+      duplicatesFound = true;
+    }
+  });
+
+  return duplicatesFound;
+};
 export default formValidator;
