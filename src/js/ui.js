@@ -3,36 +3,36 @@ import editIcon from "../assets/icons/edit.svg";
 import deleteIcon from "../assets/icons/delete.svg";
 
 class Ui {
-  static openModalOnClick(button, product) {
+  constructor(page) {
+    this.page = page;
+    this.currentProductId = null;
+    this.currentTab = "all";
+  }
+
+  openModalOnClick(button, product) {
     button.addEventListener("click", () => {
-      Ui.openModal(button.dataset.method, product);
+      this.openModal(button.dataset.method, product);
     });
   }
 
-  static openModal(method, product) {
-    const form = document.querySelector(".form");
-    const formModal = document.querySelector(".form-modal");
-    const submitAdd = document.querySelector(".button--submit");
-    const submitEdit = document.querySelector(".button--submit-edit");
-    const prescriptionSection = document.querySelector(
-      ".form__group--prescription"
-    );
-    const otcSection = document.querySelector(".form__group--otc");
-    const confirmDelete = document.querySelector(
-      ".delete-modal__button--delete"
-    );
-    const deleteModal = document.querySelector(".delete-modal");
+  getProductID() {
+    return this.currentProductId;
+  }
 
+  setProductId(id) {
+    this.currentProductId = id;
+  }
+
+  openModal(method, product) {
     if (method === "add") {
-      formModal.style.display = "flex";
-      form.dataset.mode = "add";
-      submitEdit.style.display = "none";
-      submitAdd.style.display = "flex";
+      this.page.formModal.style.display = "flex";
+      this.page.form.dataset.mode = "add";
+      this.page.submitEdit.style.display = "none";
+      this.page.submitAdd.style.display = "flex";
 
-      for (let element of form) {
+      for (let element of this.page.form) {
         if (element.classList.contains("form__input"))
           if (element.name !== "type") {
-            console.log(element);
             element.value = "";
             element.placeholder = "";
           } else {
@@ -43,44 +43,17 @@ class Ui {
         }
       }
     } else if (method === "edit") {
-      form.dataset.mode = "edit";
-      Ui.currentProductId = product.id;
+      this.setProductId(product.id);
+      console.log(this.currentProductId);
+      this.page.form.dataset.mode = "edit";
+      this.page.submitEdit.style.display = "flex";
+      this.page.submitAdd.style.display = "none";
+      this.page.formModal.style.display = "flex";
 
-      formModal.style.display = "flex";
-
-      for (let element of form) {
+      for (let element of this.page.form) {
         element.value = product[element.name];
       }
 
-      if (product.type === "prescription") {
-        prescriptionSection.style.display = "inherit";
-        otcSection.style.display = "none";
-      } else if (product.type === "otc") {
-        otcSection.style.display = "inherit";
-        prescriptionSection.style.display = "none";
-      } else {
-        prescriptionSection.style.display = "none";
-        otcSection.style.display = "none";
-      }
-    } else if (method === "confirm-delete") {
-      deleteModal.style.display = "flex";
-      confirmDelete.addEventListener("click", () => {
-        ClientController.deleteProducts(product.id);
-        Ui.renderData(Ui.currentTab);
-        deleteModal.style.display = "none";
-      });
-    }
-  }
-
-  static currentId = null;
-
-  static closeModal(
-    button,
-    modal,
-    prescriptionSection,
-    otcSection,
-    formErrors
-  ) {
       if (product.type === "prescription") {
         this.page.prescriptionSection.style.display = "inherit";
         this.page.otcSection.style.display = "none";
@@ -116,7 +89,10 @@ class Ui {
     let modal;
     if (method === "cancel-form" || method === "submit") {
       modal = this.page.formModal;
+    if (method === "cancel-form" || method === "submit") {
+      modal = this.page.formModal;
     } else if (method === "cancel-delete") {
+      modal = this.page.confirmModal;
       modal = this.page.confirmModal;
     }
 
@@ -125,16 +101,14 @@ class Ui {
     this.page.otcSection.style.display = "none";
     this.page.formErrors.forEach((error) => {
       error.style.display = "none";
+    modal.style.display = "none";
+    this.page.prescriptionSection.style.display = "none";
+    this.page.otcSection.style.display = "none";
+    this.page.formErrors.forEach((error) => {
+      error.style.display = "none";
     });
   }
 
-  static toggleMedicineSection(
-    prescriptionSection,
-    prescriptionFields,
-    otcSection,
-    otcFields,
-    select
-  ) {
   toggleMedicineSection(
     prescriptionSection,
     prescriptionFields,
@@ -314,25 +288,6 @@ class Ui {
       card.append(cardlabel, cardDataGroup, cardFooter);
       dataContainer.append(card);
 
-      Ui.openModalOnClick(editButton, product);
-      Ui.openModalOnClick(deleteButton, product);
-      // Event listeners
-      /*       editButton.addEventListener("click", () => {
-        Ui.openEditModal(formModal, product);
-        
-        submitEdit.style.display = "flex";
-        submitAdd.style.display = "none";
-      }); */
-
-      /*  deleteButton.addEventListener("click", () => {
-       */ //this.openModal(deleteButton.dataset.method, product);
-      /*         confirmModal.style.display = "flex";
-        Ui.openConfirmDeleteModal(product.id); */
-      // });
-    });
-  }
-
-  static currentTab = "all";
       this.openModalOnClick(editButton, product);
       this.openModalOnClick(deleteButton, product);
     });
@@ -357,6 +312,7 @@ class Ui {
     } else if (type === "prescription") {
       this.createElements(prescriptionData);
     } else {
+      console.error("Unable to render: Invalid type");
       console.error("Unable to render: Invalid type");
     }
   }
