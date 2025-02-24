@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   page.form.addEventListener("submit", (e) => {
     e.preventDefault();
+    const mode = page.form.dataset.mode;
     let product = {
       name: page.name.value.trim(),
       manufacturer: page.manufacturer.value.trim(),
@@ -38,11 +39,13 @@ document.addEventListener("DOMContentLoaded", () => {
       frequency: page.frequency.value.trim(),
     };
 
-    if (formValidator(page.form)) {
+    const { duplicateCheck, isValid } = formValidator(page.form, mode);
+
+    if (isValid) {
       page.formErrorSelect.style.display = "block";
-      if (page.form.dataset.mode === "add") {
+      if (mode === "add") {
         ClientController.addProduct(product);
-      } else if (page.form.dataset.mode === "edit") {
+      } else if (mode === "edit") {
         product.id = ui.currentProductId;
         ClientController.editProduct(product);
       } else {

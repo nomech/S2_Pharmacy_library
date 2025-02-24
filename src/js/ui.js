@@ -221,7 +221,7 @@ class Ui {
       deleteButton.dataset.method = "confirm-delete";
 
       let ageData = "";
-      if (product.age === "none") {
+      if (product.age === "1") {
         ageData = "No age restriction";
       } else if (product.age === "18") {
         ageData = "18+";
