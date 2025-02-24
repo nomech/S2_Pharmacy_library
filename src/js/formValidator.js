@@ -16,12 +16,12 @@ const formValidator = (form) => {
           element.nextElementSibling.style.display = "none";
         }
         if (element.name === "type") {
+          console.log(element.name);
           type = element.value;
         }
       }
     }
   }
-  console.log(isValid);
   return isValid;
 };
 

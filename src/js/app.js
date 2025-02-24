@@ -1,18 +1,16 @@
 import Ui from "./ui";
 import ClientController from "./clientController";
 import PageElements from "./pageElements.js";
-import formValidator from "./formValidator.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const page = new PageElements();
   const ui = new Ui(page);
-
   ui.renderData("all");
-  ui.openModalOnClick(page.showButton);
-  ui.closeModal(page.cancelButton);
-  ui.closeModal(page.deleteCancelButton);
-
-  ui.renderDataOnClick(page.tabs);
+  Ui.renderData("all");
+  Ui.openModalOnClick(showButton);
+  Ui.closeModalTest(cancelButton);
+  Ui.closeModalTest(deleteCancelButton);
+  Ui.renderDataOnClick(tabs);
 
   page.typeField.addEventListener("change", () => {
     ui.toggleMedicineSection(
@@ -38,19 +36,19 @@ document.addEventListener("DOMContentLoaded", () => {
       frequency: page.frequency.value.trim(),
     };
 
-    if (formValidator(page.form)) {
+    if (formValidator(form)) {
       page.formErrorSelect.style.display = "block";
-      if (page.form.dataset.mode === "add") {
+      if (form.dataset.mode === "add") {
         ClientController.addProduct(product);
-      } else if (page.form.dataset.mode === "edit") {
-        product.id = ui.currentProductId;
+      } else if (form.dataset.mode === "edit") {
+        e;
+        product.id = Ui.currentProductId;
         ClientController.editProduct(product);
       } else {
         console.error("Invalid mode");
         return;
       }
-      ui.closeModalOnClick(page.submitAdd);
-      ui.closeModalOnClick(page.submitEdit);
+
       ui.renderData(ui.currentTab);
     }
   });

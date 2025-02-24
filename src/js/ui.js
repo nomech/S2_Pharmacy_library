@@ -1,38 +1,39 @@
 import ClientController from "./clientController";
+
 import editIcon from "../assets/icons/edit.svg";
 import deleteIcon from "../assets/icons/delete.svg";
 
 class Ui {
-  constructor(page) {
-    this.page = page;
-    this.currentProductId = null;
-    this.currentTab = "all";
-  }
-
-  openModalOnClick(button, product) {
+  static openModalOnClick(button, product) {
     button.addEventListener("click", () => {
-      this.openModal(button.dataset.method, product);
+      Ui.openModal(button.dataset.method, product);
     });
   }
 
-  getProductID() {
-    return this.currentProductId;
-  }
+  static openModal(method, product) {
+    const form = document.querySelector(".form");
+    const formModal = document.querySelector(".form-modal");
+    const submitAdd = document.querySelector(".button--submit");
+    const submitEdit = document.querySelector(".button--submit-edit");
+    const prescriptionSection = document.querySelector(
+      ".form__group--prescription"
+    );
+    const otcSection = document.querySelector(".form__group--otc");
+    const confirmDelete = document.querySelector(
+      ".delete-modal__button--delete"
+    );
+    const deleteModal = document.querySelector(".delete-modal");
 
-  setProductId(id) {
-    this.currentProductId = id;
-  }
-
-  openModal(method, product) {
     if (method === "add") {
-      this.page.formModal.style.display = "flex";
-      this.page.form.dataset.mode = "add";
-      this.page.submitEdit.style.display = "none";
-      this.page.submitAdd.style.display = "flex";
+      formModal.style.display = "flex";
+      form.dataset.mode = "add";
+      submitEdit.style.display = "none";
+      submitAdd.style.display = "flex";
 
-      for (let element of this.page.form) {
+      for (let element of form) {
         if (element.classList.contains("form__input"))
           if (element.name !== "type") {
+            console.log(element);
             element.value = "";
             element.placeholder = "";
           } else {
@@ -43,63 +44,63 @@ class Ui {
         }
       }
     } else if (method === "edit") {
-      this.setProductId(product.id);
-      console.log(this.currentProductId);
-      this.page.form.dataset.mode = "edit";
-      this.page.submitEdit.style.display = "flex";
-      this.page.submitAdd.style.display = "none";
-      this.page.formModal.style.display = "flex";
+      form.dataset.mode = "edit";
+      Ui.currentProductId = product.id;
 
-      for (let element of this.page.form) {
+      formModal.style.display = "flex";
+
+      for (let element of form) {
         element.value = product[element.name];
       }
 
       if (product.type === "prescription") {
-        this.page.prescriptionSection.style.display = "inherit";
-        this.page.otcSection.style.display = "none";
+        prescriptionSection.style.display = "inherit";
+        otcSection.style.display = "none";
       } else if (product.type === "otc") {
-        this.page.otcSection.style.display = "inherit";
-        this.page.prescriptionSection.style.display = "none";
+        otcSection.style.display = "inherit";
+        prescriptionSection.style.display = "none";
       } else {
-        this.page.prescriptionSection.style.display = "none";
-        this.page.otcSection.style.display = "none";
+        prescriptionSection.style.display = "none";
+        otcSection.style.display = "none";
       }
     } else if (method === "confirm-delete") {
-      this.page.deleteModal.style.display = "flex";
-      this.page.confirmDelete.addEventListener("click", () => {
+      deleteModal.style.display = "flex";
+      confirmDelete.addEventListener("click", () => {
         ClientController.deleteProducts(product.id);
-        this.page.deleteModal.style.display = "none";
-        this.renderData(this.currentTab);
+        Ui.renderData(Ui.currentTab);
+        deleteModal.style.display = "none";
       });
     }
   }
 
   static currentId = null;
 
-  closeModal(button) {
-    button.addEventListener("click", (e) => {
-      console.log("closing");
-      e.preventDefault();
-      this.closeModalOnClick(button);
-    });
-  }
-
-  closeModalOnClick(button) {
+  static closeModalTest(button) {
+    const prescriptionSection = document.querySelector(
+      ".form__group--prescription"
+    );
+    const otcSection = document.querySelector(".form__group--otc");
+    const formErrors = document.querySelectorAll(".form__error");
     const method = button.dataset.method;
     let modal;
-    if (method === "cancel-form" || method === "submit") {
-      modal = this.page.formModal;
+
+    if (method === "cancel-form") {
+      modal = document.querySelector(".form-modal");
     } else if (method === "cancel-delete") {
-      modal = this.page.confirmModal;
+      modal = document.querySelector(".delete-modal");
     }
 
-    modal.style.display = "none";
-    this.page.prescriptionSection.style.display = "none";
-    this.page.otcSection.style.display = "none";
-    this.page.formErrors.forEach((error) => {
-      error.style.display = "none";
+    button.addEventListener("click", (e) => {
+      e.preventDefault();
+      modal.style.display = "none";
+      prescriptionSection.style.display = "none";
+      otcSection.style.display = "none";
+      formErrors.forEach((error) => {
+        error.style.display = "none";
+      });
     });
   }
+
 
   toggleMedicineSection(
     prescriptionSection,
@@ -280,8 +281,21 @@ class Ui {
       card.append(cardlabel, cardDataGroup, cardFooter);
       dataContainer.append(card);
 
-      this.openModalOnClick(editButton, product);
-      this.openModalOnClick(deleteButton, product);
+      Ui.openModalOnClick(editButton, product);
+      Ui.openModalOnClick(deleteButton, product);
+      // Event listeners
+      /*       editButton.addEventListener("click", () => {
+        Ui.openEditModal(formModal, product);
+        
+        submitEdit.style.display = "flex";
+        submitAdd.style.display = "none";
+      }); */
+
+      /*  deleteButton.addEventListener("click", () => {
+       */ //this.openModal(deleteButton.dataset.method, product);
+      /*         confirmModal.style.display = "flex";
+        Ui.openConfirmDeleteModal(product.id); */
+      // });
     });
   }
 
@@ -304,7 +318,7 @@ class Ui {
     } else if (type === "prescription") {
       this.createElements(prescriptionData);
     } else {
-      console.error("Unable to render: Invalid type");
+      console.error("Invalid type");
     }
   }
 
