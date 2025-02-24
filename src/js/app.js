@@ -14,6 +14,9 @@ const deleteCancelButton = document.querySelector(
 
 const tabs = document.querySelectorAll(".tab");
 
+const submitAdd = document.querySelector(".button--submit");
+const submitEdit = document.querySelector(".button--submit-edit");
+
 const name = document.querySelector(".form__input--name");
 const manufacturer = document.querySelector(".form__input--manufacturer");
 const expiryDate = document.querySelector(".form__input--expire");
@@ -48,8 +51,8 @@ const searchReset = document.querySelector(".button--reset");
 document.addEventListener("DOMContentLoaded", () => {
   Ui.renderData("all");
   Ui.openModalOnClick(showButton);
-  Ui.closeModalTest(cancelButton);
-  Ui.closeModalTest(deleteCancelButton);
+  Ui.closeModal(cancelButton);
+  Ui.closeModal(deleteCancelButton);
   Ui.renderDataOnClick(tabs);
 
   typeField.addEventListener("change", () => {
@@ -86,9 +89,11 @@ document.addEventListener("DOMContentLoaded", () => {
         ClientController.editProduct(product);
       } else {
         console.error("Invalid mode");
+        d;
         return;
       }
-      Ui.closeOnSubmit(formModal, prescriptionSection, otcSection, formErrors);
+      Ui.closeModalOnClick(submitAdd);
+      Ui.closeModalOnClick(submitEdit);
       Ui.renderData(Ui.currentTab);
     }
   });

@@ -13,6 +13,7 @@ class Ui {
     const form = document.querySelector(".form");
     const formModal = document.querySelector(".form-modal");
     const submitAdd = document.querySelector(".button--submit");
+  
     const submitEdit = document.querySelector(".button--submit-edit");
     const prescriptionSection = document.querySelector(
       ".form__group--prescription"
@@ -32,7 +33,6 @@ class Ui {
       for (let element of form) {
         if (element.classList.contains("form__input"))
           if (element.name !== "type") {
-            console.log(element);
             element.value = "";
             element.placeholder = "";
           } else {
@@ -43,12 +43,15 @@ class Ui {
         }
       }
     } else if (method === "edit") {
+
       form.dataset.mode = "edit";
       Ui.currentProductId = product.id;
-
+      submitEdit.style.display = "flex";
+      submitAdd.style.display = "none";
       formModal.style.display = "flex";
 
       for (let element of form) {
+        if(element.tagName !== "BUTTON")
         element.value = product[element.name];
       }
 
@@ -74,7 +77,15 @@ class Ui {
 
   static currentId = null;
 
-  static closeModalTest(button) {
+  static closeModal(button) {
+
+    button.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.closeModalOnClick(button);
+    });
+  }
+
+  static closeModalOnClick(button) {
     const prescriptionSection = document.querySelector(
       ".form__group--prescription"
     );
@@ -82,24 +93,19 @@ class Ui {
     const formErrors = document.querySelectorAll(".form__error");
     const method = button.dataset.method;
     let modal;
-
-    if (method === "cancel-form") {
+    if (method === "cancel-form" || method === "submit") {
       modal = document.querySelector(".form-modal");
     } else if (method === "cancel-delete") {
       modal = document.querySelector(".delete-modal");
     }
 
-    button.addEventListener("click", (e) => {
-      e.preventDefault();
-      modal.style.display = "none";
-      prescriptionSection.style.display = "none";
-      otcSection.style.display = "none";
-      formErrors.forEach((error) => {
-        error.style.display = "none";
-      });
+    modal.style.display = "none";
+    prescriptionSection.style.display = "none";
+    otcSection.style.display = "none";
+    formErrors.forEach((error) => {
+      error.style.display = "none";
     });
   }
-
 
   static toggleMedicineSection(
     prescriptionSection,
@@ -282,19 +288,6 @@ class Ui {
 
       Ui.openModalOnClick(editButton, product);
       Ui.openModalOnClick(deleteButton, product);
-      // Event listeners
-      /*       editButton.addEventListener("click", () => {
-        Ui.openEditModal(formModal, product);
-        
-        submitEdit.style.display = "flex";
-        submitAdd.style.display = "none";
-      }); */
-
-      /*  deleteButton.addEventListener("click", () => {
-       */ //this.openModal(deleteButton.dataset.method, product);
-      /*         confirmModal.style.display = "flex";
-        Ui.openConfirmDeleteModal(product.id); */
-      // });
     });
   }
 
