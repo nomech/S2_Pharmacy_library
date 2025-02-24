@@ -1,89 +1,17 @@
 import Ui from "./ui";
 import ClientController from "./clientController";
 import PageElements from "./pageElements.js";
-
-const formValidator = (page) => {
-  const nameValue = page.name.value.trim();
-  const manufacturerValue = page.manufacturer.value.trim();
-  const expiryDateValue = page.expiryDate.value.trim();
-  const quantityValue = page.quantity.value.trim();
-  const typeValue = page.typeField.value.trim();
-  const ageValue = page.age.value.trim();
-  const priceValue = page.price.value.trim();
-  const dosageValue = page.dosage.value.trim();
-  const frequencyValue = page.frequency.value.trim();
-
-  let isValid = true;
-  if (!nameValue) {
-    page.name.placeholder = "Name is reqired";
-    isValid = false;
-  }
-
-  if (!manufacturerValue) {
-    page.manufacturer.placeholder = "Manufacturer is reqired";
-    isValid = false;
-  }
-
-  if (!expiryDateValue) {
-    page.expiryDate.placeholder = "Name is reqired";
-    isValid = false;
-  }
-
-  if (!quantityValue) {
-    page.quantity.placeholder = "Quantity is reqired";
-    isValid = false;
-  }
-
-  if (typeValue === "none") {
-    page.formErrorSelect.style.visibility = "visible";
-    isValid = false;
-  }
-
-  if (typeValue === "otc") {
-    if (!ageValue) {
-      page.age.placeholder = "Age is reqired";
-      isValid = false;
-    }
-
-    if (!priceValue) {
-      page.price.placeholder = "Price is reqired";
-      isValid = false;
-    }
-  }
-
-  if (typeValue === "prescription") {
-    if (!dosageValue) {
-      page.dosage.placeholder = "Dosage is reqired";
-      isValid = false;
-    }
-
-    if (!frequencyValue) {
-      page.requency.placeholder = "Frequency is reqired";
-      isValid = false;
-    }
-  }
-  return isValid;
-};
+import formValidator from "./formValidator.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const page = new PageElements();
   const ui = new Ui(page);
+
   ui.renderData("all");
-  ui.openModal(
-    page.showButton,
-    page.formModal,
-    page.submitEdit,
-    page.inputFields,
-    page.submitAdd,
-    page.form,
-    page.formErrorSelect
-  );
-  ui.closeModal(
-    page.cancelButton,
-    page.formModal,
-    page.prescriptionSection,
-    page.otcSection
-  );
+  ui.openModalOnClick(page.showButton);
+  ui.closeModal(page.cancelButton);
+  ui.closeModal(page.deleteCancelButton);
+
   ui.renderDataOnClick(page.tabs);
 
   page.typeField.addEventListener("change", () => {
@@ -110,22 +38,19 @@ document.addEventListener("DOMContentLoaded", () => {
       frequency: page.frequency.value.trim(),
     };
 
-    if (formValidator(page)) {
-      page.formErrorSelect.style.visibility = "hidden";
+    if (formValidator(page.form)) {
+      page.formErrorSelect.style.display = "block";
       if (page.form.dataset.mode === "add") {
         ClientController.addProduct(product);
       } else if (page.form.dataset.mode === "edit") {
-        product.id = ui.getProductID();
+        product.id = ui.currentProductId;
         ClientController.editProduct(product);
       } else {
         console.error("Invalid mode");
         return;
       }
-      ui.closeOnSubmit(
-        page.formModal,
-        page.prescriptionSection,
-        page.otcSection
-      );
+      ui.closeModalOnClick(page.submitAdd);
+      ui.closeModalOnClick(page.submitEdit);
       ui.renderData(ui.currentTab);
     }
   });

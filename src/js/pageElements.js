@@ -35,6 +35,8 @@ class PageElements {
       document.querySelector(".form__input--price"),
       document.querySelector(".form__input--age"),
     ];
+
+    this.formErrors = document.querySelectorAll(".form__error")
     this.formErrorSelect = document.querySelector(".form__error--select");
 
     this.searchInput = document.querySelector(".nav__search-input");

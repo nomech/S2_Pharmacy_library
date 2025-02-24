@@ -40,7 +40,8 @@
         <div class="panel__main">
           <h2 class="panel__title">Admin Panel</h2>
           <!-- Add will reveal form modal -->
-          <button class="button button--add button--show-form"><img src="./src/assets/icons/add.svg">Add New
+          <button class="button button--add button--show-form" data-method="add"><img
+              src="./src/assets/icons/add.svg">Add New
             Product</button>
           <button class="button button--reset"><img src="./src/assets/icons/add.svg">Reset search</button>
 
@@ -93,7 +94,7 @@
             <label class="form__label" for="expiry">Expiry Date</label>
             <input class="form__input form__input--expire" type="date" id="expiryDate" name="expiryDate"
               data-type="common" />
-              <p class="form__error form__error--type">You need to select an expiry date</p>
+            <p class="form__error form__error--type">You need to select an expiry date</p>
           </div>
           <div class="form__group">
             <label class="form__label" for="quantity">Quantity</label>
@@ -152,13 +153,13 @@
 
           <!-- Buttons -->
           <div class="form__group">
-            <button class="button button button--form button--submit-edit"> <img src="./src/assets/icons/add.svg"
-                alt="">Edit</button>
+            <button class="button button button--form button--submit-edit" data-method="submit"> <img
+                src="./src/assets/icons/add.svg" alt="">Edit</button>
 
-            <button class="button button--add button--form button--submit"> <img src="./src/assets/icons/add.svg"
-                alt="">Add</button>
-            <button class="button button--cancel button--form"><img src="./src/assets/icons/exit.svg"
-                alt="">Cancel</button>
+            <button class="button button--add button--form button--submit" data-method="submit"> <img
+                src="./src/assets/icons/add.svg" alt="">Add</button>
+            <button class="button button--cancel button--form" data-method="cancel-form"><img
+                src="./src/assets/icons/exit.svg" alt="">Cancel</button>
           </div>
         </form>
       </div>
@@ -169,8 +170,8 @@
         <div class="delete-modal__button-group">
           <button class="delete-modal__button--delete button button--delete button--confirm"><img
               src="./src/assets/icons/delete.svg" alt="">Delete</button>
-          <button class="delete-modal__button--cancel button button--cancel button--confirm"> <img
-              src="./src/assets/icons/exit.svg" alt="">Cancel</button>
+          <button class="delete-modal__button--cancel button button--cancel button--confirm"
+            data-method="cancel-delete"> <img src="./src/assets/icons/exit.svg" alt="">Cancel</button>
         </div>
       </div>
 
