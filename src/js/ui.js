@@ -346,7 +346,7 @@ class Ui {
     this.page.addButton.style.display = "flex";
     this.page.resetButton.style.display = "none";
     this.page.searchPanel.style.display = "none";
-    this.page.tab.style.display = "flex";
+    this.page.tabs.style.display = "flex";
     this.page.searchInput.value = "";
 
     this.createElements(data);
