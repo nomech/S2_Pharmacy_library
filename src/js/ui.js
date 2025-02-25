@@ -78,7 +78,6 @@ class Ui {
 
   closeModal(button) {
     button.addEventListener("click", (e) => {
-      console.log("closing");
       e.preventDefault();
       this.closeModalOnClick(button);
     });
@@ -97,6 +96,7 @@ class Ui {
     }
 
     modal.style.display = "none";
+    this.page.formHeaderError.style.display = "none";
     this.page.prescriptionSection.style.display = "none";
     this.page.otcSection.style.display = "none";
     this.page.formErrors.forEach((error) => {

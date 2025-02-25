@@ -46,26 +46,25 @@ const CheckExistingDataForDuplicates = (data, mode, id) => {
   if (mode === "edit") {
     Object.keys(data).forEach((key) => {
       if (productsData[key].toLowerCase() !== data[key]) {
-        duplicatesFound = duplicateCheck(products, data);
+        duplicatesFound = duplicateChecker(products, data);
         console.log(duplicatesFound);
       } else {
         return duplicatesFound;
       }
     });
   } else {
-    duplicatesFound = duplicateCheck(products, data);
+    duplicatesFound = duplicateChecker(products, data);
   }
 
   return duplicatesFound;
 };
 
-const duplicateCheck = (products, data) => {
+const duplicateChecker = (products, data) => {
   let duplicates = false;
   products.forEach((product) => {
     if (
       Object.keys(data).every((key) => data[key] === product[key].toLowerCase())
     ) {
-      console.log(true);
       duplicates = true;
     }
   });
