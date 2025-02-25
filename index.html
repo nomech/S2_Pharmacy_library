@@ -79,16 +79,20 @@
         <div class="form__modal-header">
           <h3>Add product</h3>
           <p>Please make sure to enter the correct information in every field!</p>
+          <div class="form__header-error">
+            <p>This product already existst </p>
+          </div>
         </div>
         <form action="" class="form">
           <div class="form__group">
             <label class="form__label" for="name">Product name</label>
-            <input class="form__input form__input--name" type="text" id="name" name="name" data-type="common" />
+            <input class="form__input form__input--name" type="text" id="name" name="name" maxlength="20"
+              data-type="common" />
           </div>
           <div class="form__group">
             <label class="form__label" for="manufacturer">Manufacturer</label>
-            <input class="form__input form__input--manufacturer" type="text" id="manufacturer" name="manufacturer"
-              data-type="common" />
+            <input class="form__input form__input--manufacturer" type="text" id="manufacturer" maxlength="20"
+              name="manufacturer" data-type="common" />
           </div>
           <div class="form__group">
             <label class="form__label" for="expiry">Expiry Date</label>
@@ -141,7 +145,7 @@
           <div class="form__group form__group--otc">
             <label class="form__label" for="age">Age restriction</label>
             <select class="form__input form__input--age" name="age" id="age" data-type="otc">
-              <option value="0">No age restriction</option>
+              <option value="1">No age restriction</option>
               <option value="18">18+</option>
               <option value="21">21+</option>
             </select>
