@@ -39,22 +39,30 @@ document.addEventListener("DOMContentLoaded", () => {
       frequency: page.frequency.value.trim(),
     };
 
-    const { duplicateCheck, isValid } = formValidator(page.form, mode);
+    const { duplicateCheck, isValid } = formValidator(
+      page.form,
+      ui.currentProductId
+    );
 
     if (isValid) {
-      page.formErrorSelect.style.display = "block";
-      if (mode === "add") {
-        ClientController.addProduct(product);
-      } else if (mode === "edit") {
-        product.id = ui.currentProductId;
-        ClientController.editProduct(product);
+      if (!duplicateCheck) {
+        page.formErrorSelect.style.display = "block";
+        page.formHeaderError.style.display = "none";
+        if (mode === "add") {
+          ClientController.addProduct(product);
+        } else if (mode === "edit") {
+          product.id = ui.currentProductId;
+          ClientController.editProduct(product);
+        } else {
+          console.error("Invalid mode");
+          return;
+        }
+        ui.closeModalOnClick(page.submitAdd);
+        ui.closeModalOnClick(page.submitEdit);
+        ui.renderData(ui.currentTab);
       } else {
-        console.error("Invalid mode");
-        return;
+        page.formHeaderError.style.display = "flex";
       }
-      ui.closeModalOnClick(page.submitAdd);
-      ui.closeModalOnClick(page.submitEdit);
-      ui.renderData(ui.currentTab);
     }
   });
 
@@ -63,6 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ui.submitSearch(e.target.value);
     }
   });
+
   page.searchReset.addEventListener("click", () => {
     ui.resetSearch();
   });

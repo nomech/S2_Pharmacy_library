@@ -36,7 +36,7 @@ class PageElements {
       document.querySelector(".form__input--age"),
     ];
 
-    this.formErrors = document.querySelectorAll(".form__error")
+    this.formErrors = document.querySelectorAll(".form__error");
     this.formErrorSelect = document.querySelector(".form__error--select");
 
     this.searchInput = document.querySelector(".nav__search-input");
@@ -49,6 +49,7 @@ class PageElements {
     this.openConfirmModal = document.querySelector(".button--delete");
     this.confirmDelete = document.querySelector(".button--confirm");
     this.confirmModal = document.querySelector(".delete-modal");
+    this.formHeaderError = document.querySelector(".form__header-error");
   }
 }
 
