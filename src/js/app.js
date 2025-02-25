@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const page = new PageElements();
   const ui = new Ui(page);
   console.log(page.searchPanel);
-  
+
   ui.renderData("all");
   ui.openModalOnClick(page.showButton);
   ui.closeModal(page.cancelButton);
@@ -16,13 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ui.renderDataOnClick(page.tab);
 
   page.typeField.addEventListener("change", () => {
-    ui.toggleMedicineSection(
-      page.prescriptionSection,
-      page.prescriptionFields,
-      page.otcSection,
-      page.otcFields,
-      page.typeField
-    );
+    ui.toggleMedicineSection(page.typeField);
   });
 
   page.form.addEventListener("submit", (e) => {
@@ -44,8 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
       page.form,
       ui.currentProductId
     );
-    console.log(product);
-    console.log(isValid);
 
     if (isValid) {
       if (!duplicateCheck) {

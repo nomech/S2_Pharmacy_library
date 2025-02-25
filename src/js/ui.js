@@ -86,54 +86,48 @@ class Ui {
   closeModalOnClick(button) {
     const method = button.dataset.method;
     let modal;
+
     if (method === "cancel-form" || method === "submit") {
       modal = this.page.formModal;
-      if (method === "cancel-form" || method === "submit") {
-        modal = this.page.formModal;
-      } else if (method === "cancel-delete") {
-        modal = this.page.confirmModal;
-        modal = this.page.confirmModal;
-      }
+    }
+    if (method === "cancel-form" || method === "submit") {
+      modal = this.page.formModal;
+    } else if (method === "cancel-delete") {
+      modal = this.page.confirmModal;
+    }
 
+    modal.style.display = "none";
+    this.page.formHeaderError.style.display = "none";
+    this.page.prescriptionSection.style.display = "none";
+    this.page.otcSection.style.display = "none";
+    this.page.formErrors.forEach((error) => {
+      error.style.display = "none";
       modal.style.display = "none";
-      this.page.formHeaderError.style.display = "none";
       this.page.prescriptionSection.style.display = "none";
       this.page.otcSection.style.display = "none";
       this.page.formErrors.forEach((error) => {
         error.style.display = "none";
-        modal.style.display = "none";
-        this.page.prescriptionSection.style.display = "none";
-        this.page.otcSection.style.display = "none";
-        this.page.formErrors.forEach((error) => {
-          error.style.display = "none";
-        });
       });
-    }
+    });
   }
 
-  toggleMedicineSection(
-    prescriptionSection,
-    prescriptionFields,
-    otcSection,
-    otcFields,
-    select
-  ) {
-    prescriptionSection.style.display = "none";
-    otcSection.style.display = "none";
-    prescriptionFields.forEach((field) => {
+  toggleMedicineSection(select) {
+    this.page.prescriptionSection.style.display = "none";
+    this.page.otcSection.style.display = "none";
+    this.page.prescriptionFields.forEach((field) => {
       field.value = "";
     });
-    otcFields.forEach((field) => {
+    this.page.otcFields.forEach((field) => {
       field.value = "";
     });
 
     if (select.value === "prescription") {
-      prescriptionSection.style.display = "inherit";
+      this.page.prescriptionSection.style.display = "inherit";
     } else if (select.value === "otc") {
-      otcSection.style.display = "inherit";
+      this.page.otcSection.style.display = "inherit";
     } else {
-      prescriptionSection.style.display = "none";
-      otcSection.style.display = "none";
+      this.page.prescriptionSection.style.display = "none";
+      this.page.otcSection.style.display = "none";
     }
   }
 
@@ -328,7 +322,7 @@ class Ui {
         this.currentTab = tab.dataset.id;
 
         //Renders data for the current tab.
-        this.renderData(tab.dataset.id);
+        this.renderData(this.currentTab);
 
         //Makes the current tab active
         tab.classList.add("tab--active");
@@ -370,6 +364,6 @@ class Ui {
       this.resetSearch();
     }
   }
-} 
+}
 
 export default Ui;
