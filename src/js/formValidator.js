@@ -1,10 +1,14 @@
 const formValidator = (form, id) => {
+  let type = "common"
   let isValid = true;
   const productData = {};
 
   for (let element of form) {
     if (element.tagName === "INPUT" || element.tagName === "SELECT") {
       if (type === element.dataset.type) {
+        
+        
+        console.log(!element.value);
         if (!element.value || element.value === "none") {
           element.placeholder = `${element.name} is required`;
           isValid = false;
@@ -35,7 +39,7 @@ const formValidator = (form, id) => {
     id
   );
 
-  return { duplicateCheck, isValid };
+    return { duplicateCheck, isValid };
 };
 
 const CheckExistingDataForDuplicates = (data, mode, id) => {

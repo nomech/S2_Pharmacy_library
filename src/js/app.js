@@ -6,13 +6,14 @@ import formValidator from "./formValidator.js";
 document.addEventListener("DOMContentLoaded", () => {
   const page = new PageElements();
   const ui = new Ui(page);
-
+  console.log(page.searchPanel);
+  
   ui.renderData("all");
   ui.openModalOnClick(page.showButton);
   ui.closeModal(page.cancelButton);
   ui.closeModal(page.deleteCancelButton);
 
-  ui.renderDataOnClick(page.tabs);
+  ui.renderDataOnClick(page.tab);
 
   page.typeField.addEventListener("change", () => {
     ui.toggleMedicineSection(
@@ -43,6 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
       page.form,
       ui.currentProductId
     );
+    console.log(product);
+    console.log(isValid);
 
     if (isValid) {
       if (!duplicateCheck) {

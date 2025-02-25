@@ -1,16 +1,25 @@
 class PageElements {
   constructor() {
     this.showButton = document.querySelector(".button--show-form");
+
     this.formModal = document.querySelector(".form-modal");
-    this.form = document.querySelector(".form");
     this.deleteModal = document.querySelector(".delete-modal");
 
+    this.form = document.querySelector(".form");
+    this.formErrors = document.querySelectorAll(".form__error");
+    this.formErrorSelect = document.querySelector(".form__error--select");
+    this.openConfirmModal = document.querySelector(".button--delete");
+    this.addButton = document.querySelector(".button--add");
+    this.submitEdit = document.querySelector(".button--submit-edit");
+    this.submitAdd = document.querySelector(".button--submit");
     this.cancelButton = document.querySelector(".button--cancel");
     this.deleteCancelButton = document.querySelector(
       ".delete-modal__button--cancel"
     );
 
-    this.tabs = document.querySelectorAll(".tab");
+    this.tab = document.querySelectorAll(".tab");
+
+    this.dataContainer =  document.querySelector(".data");
 
     this.name = document.querySelector(".form__input--name");
     this.manufacturer = document.querySelector(".form__input--manufacturer");
@@ -36,20 +45,19 @@ class PageElements {
       document.querySelector(".form__input--age"),
     ];
 
-    this.formErrors = document.querySelectorAll(".form__error");
-    this.formErrorSelect = document.querySelector(".form__error--select");
-
     this.searchInput = document.querySelector(".nav__search-input");
     this.searchReset = document.querySelector(".button--reset");
-    this.submitEdit = document.querySelector(".button--submit-edit");
-    this.submitAdd = document.querySelector(".button--submit");
     this.inputFields = document.querySelectorAll(".form__input");
+    this.searchPanel = document.querySelector(".panel__search");
+    this.resetButton = document.querySelector(".button--reset");
+    this.queryText = document.querySelector(".panel__search-query");
 
-    this.submitAdd = document.querySelector(".button--submit");
-    this.openConfirmModal = document.querySelector(".button--delete");
     this.confirmDelete = document.querySelector(".button--confirm");
     this.confirmModal = document.querySelector(".delete-modal");
     this.formHeaderError = document.querySelector(".form__header-error");
+    this.panelTitle = document.querySelector(".panel__title");
+
+    this.tabs = document.querySelector(".tabs");
   }
 }
 

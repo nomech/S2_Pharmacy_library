@@ -88,25 +88,27 @@ class Ui {
     let modal;
     if (method === "cancel-form" || method === "submit") {
       modal = this.page.formModal;
-    if (method === "cancel-form" || method === "submit") {
-      modal = this.page.formModal;
-    } else if (method === "cancel-delete") {
-      modal = this.page.confirmModal;
-      modal = this.page.confirmModal;
-    }
+      if (method === "cancel-form" || method === "submit") {
+        modal = this.page.formModal;
+      } else if (method === "cancel-delete") {
+        modal = this.page.confirmModal;
+        modal = this.page.confirmModal;
+      }
 
-    modal.style.display = "none";
-    this.page.formHeaderError.style.display = "none";
-    this.page.prescriptionSection.style.display = "none";
-    this.page.otcSection.style.display = "none";
-    this.page.formErrors.forEach((error) => {
-      error.style.display = "none";
-    modal.style.display = "none";
-    this.page.prescriptionSection.style.display = "none";
-    this.page.otcSection.style.display = "none";
-    this.page.formErrors.forEach((error) => {
-      error.style.display = "none";
-    });
+      modal.style.display = "none";
+      this.page.formHeaderError.style.display = "none";
+      this.page.prescriptionSection.style.display = "none";
+      this.page.otcSection.style.display = "none";
+      this.page.formErrors.forEach((error) => {
+        error.style.display = "none";
+        modal.style.display = "none";
+        this.page.prescriptionSection.style.display = "none";
+        this.page.otcSection.style.display = "none";
+        this.page.formErrors.forEach((error) => {
+          error.style.display = "none";
+        });
+      });
+    }
   }
 
   toggleMedicineSection(
@@ -137,9 +139,7 @@ class Ui {
 
   //function that creates elements to be rendered
   createElements(data, mode) {
-    const dataContainer = document.querySelector(".data");
-
-    dataContainer.innerHTML = "";
+    this.page.dataContainer.innerHTML = "";
 
     if (!data.length > 0) {
       const noProduct = document.createElement("p");
@@ -148,7 +148,7 @@ class Ui {
         mode === "search"
           ? "No products found with that name"
           : "There are no products added yet";
-      dataContainer.append(noProduct);
+      this.page.dataContainer.append(noProduct);
     }
 
     data.forEach((product) => {
@@ -286,7 +286,7 @@ class Ui {
       cardButtons.append(editButton, deleteButton);
       cardFooter.append(stock, cardButtons);
       card.append(cardlabel, cardDataGroup, cardFooter);
-      dataContainer.append(card);
+      this.page.dataContainer.append(card);
 
       this.openModalOnClick(editButton, product);
       this.openModalOnClick(deleteButton, product);
@@ -312,7 +312,6 @@ class Ui {
     } else if (type === "prescription") {
       this.createElements(prescriptionData);
     } else {
-      console.error("Unable to render: Invalid type");
       console.error("Unable to render: Invalid type");
     }
   }
@@ -342,48 +341,35 @@ class Ui {
   }
 
   resetSearch() {
-    const panelTitle = document.querySelector(".panel__title");
-    const addButton = document.querySelector(".button--add");
-    const searchPanel = document.querySelector(".panel__search");
-    const resetButton = document.querySelector(".button--reset");
-    const tabs = document.querySelector(".tabs");
-    const searchInput = document.querySelector(".nav__search-input");
-
     const data = JSON.parse(localStorage.getItem("products")) || [];
-    panelTitle.innerText = "Admin Panel";
-    addButton.style.display = "flex";
-    resetButton.style.display = "none";
-    searchPanel.style.display = "none";
-    tabs.style.display = "flex";
-    searchInput.value = "";
+    this.page.panelTitle.innerText = "Admin Panel";
+    this.page.addButton.style.display = "flex";
+    this.page.resetButton.style.display = "none";
+    this.page.searchPanel.style.display = "none";
+    this.page.tab.style.display = "flex";
+    this.page.searchInput.value = "";
 
     this.createElements(data);
   }
 
   submitSearch(searchQuery) {
-    const panelTitle = document.querySelector(".panel__title");
-    const addButton = document.querySelector(".button--add");
-    const searchPanel = document.querySelector(".panel__search");
-    const resetButton = document.querySelector(".button--reset");
-    const queryText = document.querySelector(".panel__search-query");
-    const tabs = document.querySelector(".tabs");
     const data = JSON.parse(localStorage.getItem("products")) || [];
     const results = data.filter((product) => {
       return product.name.toLowerCase().includes(searchQuery.toLowerCase());
     });
 
     this.renderSearchData(results);
-    queryText.innerText = `"${searchQuery}"`;
+    this.page.queryText.innerText = `"${searchQuery}"`;
     if (searchQuery.length > 0) {
-      addButton.style.display = "none";
-      panelTitle.innerText = "Search Results";
-      searchPanel.style.display = "flex";
-      tabs.style.display = "none";
-      resetButton.style.display = "flex";
+      this.page.panelTitle.innerText = "Search Results";
+      this.page.searchPanel.style.display = "flex";
+      this.page.addButton.style.display = "none";
+      this.page.tabs.style.display = "none";
+      this.page.resetButton.style.display = "flex";
     } else {
       this.resetSearch();
     }
   }
-}
+} 
 
 export default Ui;
