@@ -74,7 +74,6 @@ class ClientController {
   }
 
   static editProduct(editedProduct) {
-    console.log(editedProduct)
     const index = ClientController.products.findIndex(
       (product) => product.id === editedProduct.id
     );

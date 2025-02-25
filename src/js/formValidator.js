@@ -1,5 +1,4 @@
-const formValidator = (form, mode) => {
-  let type = "common";
+const formValidator = (form, id) => {
   let isValid = true;
   const productData = {};
 
@@ -30,21 +29,47 @@ const formValidator = (form, mode) => {
     }
   }
 
-  const duplicateCheck = ChcekExistingDataForDuplicates(productData);
+  const duplicateCheck = CheckExistingDataForDuplicates(
+    productData,
+    form.dataset.mode,
+    id
+  );
+
   return { duplicateCheck, isValid };
 };
 
-const ChcekExistingDataForDuplicates = (data) => {
+const CheckExistingDataForDuplicates = (data, mode, id) => {
   let duplicatesFound = false;
   const products = JSON.parse(localStorage.getItem("products")) || [];
+  const productsData = products.find((product) => product.id === id);
 
-  products.forEach((product) => {
-    if (Object.keys(data).every((key) => 
-      data[key] === product[key].toLowerCase())) {
-      duplicatesFound = true;
-    }
-  });
+  if (mode === "edit") {
+    Object.keys(data).forEach((key) => {
+      if (productsData[key].toLowerCase() !== data[key]) {
+        duplicatesFound = duplicateCheck(products, data);
+        console.log(duplicatesFound);
+      } else {
+        return duplicatesFound;
+      }
+    });
+  } else {
+    duplicatesFound = duplicateCheck(products, data);
+  }
 
   return duplicatesFound;
 };
+
+const duplicateCheck = (products, data) => {
+  let duplicates = false;
+  products.forEach((product) => {
+    if (
+      Object.keys(data).every((key) => data[key] === product[key].toLowerCase())
+    ) {
+      console.log(true);
+      duplicates = true;
+    }
+  });
+  return duplicates;
+};
+
 export default formValidator;

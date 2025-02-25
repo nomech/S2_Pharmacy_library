@@ -56,6 +56,22 @@
   padding: var(--large);
   background-color: #ffffff;
   border-bottom: 1px solid gainsboro;
+  position: relative;
+}
+
+.form__header-error {
+  display: none;
+  justify-content: center;
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+}
+
+.form__header-error p {
+  background-color: rgb(255, 64, 64);
+  color: #ffffff;
+  padding: var(--xsmall);
 }
 
 .form__group:has(.button) {
@@ -77,4 +93,3 @@
   color: rgba(255, 0, 0, 0.75);
   font-style: italic;
 }
-
