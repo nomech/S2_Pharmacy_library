@@ -93,3 +93,9 @@
   color: rgba(255, 0, 0, 0.75);
   font-style: italic;
 }
+
+@media (min-width: 768px) {
+  .form__modal-content {
+    overflow: scroll;
+  }
+}
