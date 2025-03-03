@@ -7,6 +7,7 @@ class Ui {
     this.page = page;
     this.currentProductId = null;
     this.currentTab = "all";
+    this.confirmDeleteListener = null;
   }
 
   openModalOnClick(button, product) {
@@ -24,54 +25,81 @@ class Ui {
   }
 
   openModal(method, product) {
-    if (method === "add") {
-      this.page.formModal.style.display = "flex";
-      this.page.form.dataset.mode = "add";
-      this.page.submitEdit.style.display = "none";
-      this.page.submitAdd.style.display = "flex";
+    switch (method) {
+      case "add":
+        this.openAddModal();
+        break;
+      case "edit":
+        this.openEditModal(product);
+        break;
+      case "confirm-delete":
+        this.openDeleteModal(product);
+        break;
+      default:
+        console.error("Invalid modal method");
+    }
+  }
 
-      for (let element of this.page.form) {
-        if (element.classList.contains("form__input"))
-          if (element.name !== "type") {
-            element.value = "";
-            element.placeholder = "";
-          } else {
-            element.value = "none";
-          }
-        if (element.classList.contains(".form__error")) {
-          element.style.display = "none";
+  openAddModal() {
+    this.page.formModal.style.display = "flex";
+    this.page.form.dataset.mode = "add";
+    this.page.submitEdit.style.display = "none";
+    this.page.submitAdd.style.display = "flex";
+
+    for (let element of this.page.form) {
+      if (element.classList.contains("form__input")) {
+        if (element.name !== "type") {
+          element.value = "";
+          element.placeholder = "";
+        } else {
+          element.value = "none";
         }
       }
-    } else if (method === "edit") {
-      this.setProductId(product.id);
-      console.log(this.currentProductId);
-      this.page.form.dataset.mode = "edit";
-      this.page.submitEdit.style.display = "flex";
-      this.page.submitAdd.style.display = "none";
-      this.page.formModal.style.display = "flex";
-
-      for (let element of this.page.form) {
-        element.value = product[element.name];
+      if (element.classList.contains(".form__error")) {
+        element.style.display = "none";
       }
-
-      if (product.type === "prescription") {
-        this.page.prescriptionSection.style.display = "inherit";
-        this.page.otcSection.style.display = "none";
-      } else if (product.type === "otc") {
-        this.page.otcSection.style.display = "inherit";
-        this.page.prescriptionSection.style.display = "none";
-      } else {
-        this.page.prescriptionSection.style.display = "none";
-        this.page.otcSection.style.display = "none";
-      }
-    } else if (method === "confirm-delete") {
-      this.page.deleteModal.style.display = "flex";
-      this.page.confirmDelete.addEventListener("click", () => {
-        ClientController.deleteProducts(product.id);
-        this.page.deleteModal.style.display = "none";
-        this.renderData(this.currentTab);
-      });
     }
+  }
+
+  openEditModal(product) {
+    this.setProductId(product.id);
+    this.page.form.dataset.mode = "edit";
+    this.page.submitEdit.style.display = "flex";
+    this.page.submitAdd.style.display = "none";
+    this.page.formModal.style.display = "flex";
+
+    for (let element of this.page.form) {
+      element.value = product[element.name];
+    }
+
+    // Toggle the correct medicine section based on product type
+    if (product.type === "prescription") {
+      this.page.prescriptionSection.style.display = "inherit";
+      this.page.otcSection.style.display = "none";
+    } else if (product.type === "otc") {
+      this.page.otcSection.style.display = "inherit";
+      this.page.prescriptionSection.style.display = "none";
+    } else {
+      this.page.prescriptionSection.style.display = "none";
+      this.page.otcSection.style.display = "none";
+    }
+  }
+
+  openDeleteModal(product) {
+    this.page.deleteModal.style.display = "flex";
+    if (this.confirmDeleteListener) {
+      this.page.confirmDelete.removeEventListener("click", this.confirmDeleteListener);
+    }
+
+    // Define a new delete event listener
+    this.confirmDeleteListener = () => {
+      ClientController.deleteProducts(product.id);
+      this.page.deleteModal.style.display = "none";
+      this.renderData(this.currentTab);
+    };
+
+    // Attach the new event listener
+    this.page.confirmDelete.addEventListener("click", this.confirmDeleteListener);
   }
 
   static currentId = null;
@@ -89,25 +117,18 @@ class Ui {
 
     if (method === "cancel-form" || method === "submit") {
       modal = this.page.formModal;
-    }
-    if (method === "cancel-form" || method === "submit") {
-      modal = this.page.formModal;
     } else if (method === "cancel-delete") {
       modal = this.page.confirmModal;
     }
 
-    modal.style.display = "none";
+    if (modal) {
+      modal.style.display = "none";
+    }
     this.page.formHeaderError.style.display = "none";
     this.page.prescriptionSection.style.display = "none";
     this.page.otcSection.style.display = "none";
     this.page.formErrors.forEach((error) => {
       error.style.display = "none";
-      modal.style.display = "none";
-      this.page.prescriptionSection.style.display = "none";
-      this.page.otcSection.style.display = "none";
-      this.page.formErrors.forEach((error) => {
-        error.style.display = "none";
-      });
     });
   }
 
@@ -131,7 +152,7 @@ class Ui {
     }
   }
 
-  //function that creates elements to be rendered
+  // Function that creates elements to be rendered
   createElements(data, mode) {
     this.page.dataContainer.innerHTML = "";
 
@@ -254,14 +275,14 @@ class Ui {
       mfr.append(mfrLabel, mfrText);
       exp.append(expLabel, expText);
 
-      // Append labels and values
+      // Append labels and values for OTC products
       if (product.type === "otc") {
         age.append(ageLabel, ageText);
         price.append(priceLabel, priceText);
         cardText.append(mfr, exp, age, price);
       }
 
-      // Append labels and values
+      // Append labels and values for prescription products
       if (product.type === "prescription") {
         frequency.append(frequencyLabel, frequencyText);
         cardText.append(mfr, exp, frequency);
@@ -272,8 +293,6 @@ class Ui {
 
       // Append all elements to card
       cardHeader.append(cardTitle);
-
-      //cardText.append(mfr, exp, age, price);
       cardDataGroup.append(cardHeader, cardText);
       editButton.append(editImg, `Edit`);
       deleteButton.append(deleteImg, `Delete`);
@@ -287,17 +306,12 @@ class Ui {
     });
   }
 
-  // renders data
+  // Renders data based on product type
   renderData(type) {
     const data = JSON.parse(localStorage.getItem("products")) || [];
     const allData = data ? data : [];
-    const otcData = data.filter((item) => {
-      return item.type === "otc";
-    });
-
-    const prescriptionData = data.filter((item) => {
-      return item.type === "prescription";
-    });
+    const otcData = data.filter((item) => item.type === "otc");
+    const prescriptionData = data.filter((item) => item.type === "prescription");
 
     if (type === "all") {
       this.createElements(allData);
@@ -313,7 +327,7 @@ class Ui {
   renderDataOnClick(tabs) {
     tabs.forEach((tab) => {
       tab.addEventListener("click", () => {
-        // Removes any active tab indicator
+        // Remove any active tab indicator
         tabs.forEach((tab) => {
           if (tab.classList.contains("tab--active"))
             tab.classList.remove("tab--active");
@@ -321,10 +335,10 @@ class Ui {
 
         this.currentTab = tab.dataset.id;
 
-        //Renders data for the current tab.
+        // Render data for the current tab.
         this.renderData(this.currentTab);
 
-        //Makes the current tab active
+        // Mark the current tab as active
         tab.classList.add("tab--active");
       });
     });
