@@ -9,8 +9,8 @@ Pharmacy Inventory Management System is a responsive web application for managin
 
 ## GitHub Repository
 
--   [![GitHub Repository](https://img.shields.io/badge/GitHub-Repo-blue)](https://github.com/nomech/S2_assignment_2)
--   https://github.com/nomech/S2_assignment_2
+-   [![GitHub Repository](https://img.shields.io/badge/GitHub-Repo-blue)](https://github.com/nomech/S2_Pharmacy_library)
+-   https://github.com/nomech/S2_Pharmacy_library
 
 ## Description
 
@@ -27,8 +27,9 @@ Pharmacy Inventory Management System allows users to:
 -   **HTML5**
 -   **CSS3** (BEM, modular structure)
 -   **JavaScript (ES6+)**
--   **Vite**
+-   **Vite** Chosen as the build tool and development server for its fast hot module replacement and minimal configuration.
 -   **localStorage**
+-   **Netlify** Due to its simple integration with static sites, continuous deployment from GitHub, and free hosting tier.
 
 ## Accessibility & Features
 
