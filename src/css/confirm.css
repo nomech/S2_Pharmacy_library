@@ -23,5 +23,6 @@
 
 .delete-modal__button-group {
   display: flex;
+  justify-content: center;
   gap: var(--xsmall);
 }

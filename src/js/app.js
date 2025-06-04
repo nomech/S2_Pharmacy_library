@@ -1,73 +1,85 @@
-import Ui from "./ui";
-import ClientController from "./clientController";
-import PageElements from "./pageElements.js";
-import formValidator from "./formValidator.js";
+// Import UI, controller, page elements, and form validator modules
+import Ui from './ui';
+import ClientController from './clientController';
+import PageElements from './pageElements.js';
+import formValidator from './formValidator.js';
 
-document.addEventListener("DOMContentLoaded", () => {
-  const page = new PageElements();
-  const ui = new Ui(page);
-  console.log(page.searchPanel);
+// Wait for the DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+	// Initialize page elements and UI
+	const page = new PageElements();
+	const ui = new Ui(page);
 
-  ui.renderData("all");
-  ui.openModalOnClick(page.showButton);
-  ui.closeModal(page.cancelButton);
-  ui.closeModal(page.deleteCancelButton);
+	// Render all products on initial load
+	ui.renderData('all');
 
-  ui.renderDataOnClick(page.tab);
+	// Set up event listeners for opening and closing modals
+	ui.openModalOnClick(page.showButton);
+	ui.closeModal(page.cancelButton);
+	ui.closeModal(page.deleteCancelButton);
 
-  page.typeField.addEventListener("change", () => {
-    ui.toggleMedicineSection(page.typeField);
-  });
+	// Set up tab click listeners to render data by type
+	ui.renderDataOnClick(page.tab);
 
-  page.form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const mode = page.form.dataset.mode;
-    let product = {
-      name: page.name.value.trim(),
-      manufacturer: page.manufacturer.value.trim(),
-      expiryDate: page.expiryDate.value.trim(),
-      quantity: page.quantity.value.trim(),
-      type: page.typeField.value.trim(),
-      age: page.age.value.trim(),
-      price: page.price.value.trim(),
-      dosage: page.dosage.value.trim(),
-      frequency: page.frequency.value.trim(),
-    };
+	// Change medicine section in form based on type selection
+	page.typeField.addEventListener('change', () => {
+		ui.toggleMedicineSection(page.typeField);
+	});
 
-    const { duplicateCheck, isValid } = formValidator(
-      page.form,
-      ui.currentProductId
-    );
+	// Handle form submission for adding/editing products
+	page.form.addEventListener('submit', (e) => {
+		e.preventDefault();
+		const mode = page.form.dataset.mode;
+		let product = {
+			name: page.name.value.trim(),
+			manufacturer: page.manufacturer.value.trim(),
+			expiryDate: page.expiryDate.value.trim(),
+			quantity: page.quantity.value.trim(),
+			type: page.typeField.value.trim(),
+			age: page.age.value.trim(),
+			price: page.price.value.trim(),
+			dosage: page.dosage.value.trim(),
+			frequency: page.frequency.value.trim(),
+		};
 
-    if (isValid) {
-      if (!duplicateCheck) {
-        page.formErrorSelect.style.display = "block";
-        page.formHeaderError.style.display = "none";
-        if (mode === "add") {
-          ClientController.addProduct(product);
-        } else if (mode === "edit") {
-          product.id = ui.currentProductId;
-          ClientController.editProduct(product);
-        } else {
-          console.error("Invalid mode");
-          return;
-        }
-        ui.closeModalOnClick(page.submitAdd);
-        ui.closeModalOnClick(page.submitEdit);
-        ui.renderData(ui.currentTab);
-      } else {
-        page.formHeaderError.style.display = "flex";
-      }
-    }
-  });
+		// Validate form and check for duplicates
+		const { duplicateCheck, isValid } = formValidator(page.form, ui.currentProductId);
 
-  page.searchInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      ui.submitSearch(e.target.value);
-    }
-  });
+		if (isValid) {
+			if (!duplicateCheck) {
+				// If valid and not duplicate, add or edit product
+				page.formErrorSelect.style.display = 'block';
+				page.formHeaderError.style.display = 'none';
+				if (mode === 'add') {
+					ClientController.addProduct(product);
+				} else if (mode === 'edit') {
+					product.id = ui.currentProductId;
+					ClientController.editProduct(product);
+				} else {
+					console.error('Invalid mode');
+					return;
+				}
 
-  page.searchReset.addEventListener("click", () => {
-    ui.resetSearch();
-  });
+				// Close modal and re-render data
+				ui.closeModalOnClick(page.submitAdd);
+				ui.closeModalOnClick(page.submitEdit);
+				ui.renderData(ui.currentTab);
+			} else {
+				// Show error if duplicate found
+				page.formHeaderError.style.display = 'flex';
+			}
+		}
+	});
+
+	// Search for products by name when Enter is pressed
+	page.searchInput.addEventListener('keydown', (e) => {
+		if (e.key === 'Enter') {
+			ui.submitSearch(e.target.value);
+		}
+	});
+
+	// Reset search results when reset button is clicked
+	page.searchReset.addEventListener('click', () => {
+		ui.resetSearch();
+	});
 });

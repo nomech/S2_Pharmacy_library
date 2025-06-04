@@ -1,91 +1,88 @@
-import OTC from "./otc.js";
-import Prescription from "./prescription.js";
+// Import OTC and Prescription classes
+import OTC from './otc.js';
+import Prescription from './prescription.js';
 
 class ClientController {
-  static products = JSON.parse(localStorage.getItem("products")) || [];
+	// Static array to hold all products, loaded from localStorage
+	static products = JSON.parse(localStorage.getItem('products')) || [];
 
-  static addProduct(product) {
-    let item;
-    if (product.type === "otc") {
-      item = this.addOTC(
-        product.name,
-        product.manufacturer,
-        product.expiryDate,
-        product.quantity,
-        product.type,
-        product.age,
-        product.price
-      );
+	// Add a new product (OTC or Prescription) to the inventory
+	static addProduct(product) {
+		let item;
+		if (product.type === 'otc') {
+			// Create OTC product instance
+			item = this.addOTC(
+				product.name,
+				product.manufacturer,
+				product.expiryDate,
+				product.quantity,
+				product.type,
+				product.age,
+				product.price
+			);
 
-      ClientController.products.push(item);
-    } else if (product.type === "prescription") {
-      item = this.addPrescription(
-        product.name,
-        product.manufacturer,
-        product.expiryDate,
-        product.quantity,
-        product.type,
-        product.dosage,
-        product.frequency
-      );
+			ClientController.products.push(item);
+		} else if (product.type === 'prescription') {
+			// Create Prescription product instance
+			item = this.addPrescription(
+				product.name,
+				product.manufacturer,
+				product.expiryDate,
+				product.quantity,
+				product.type,
+				product.dosage,
+				product.frequency
+			);
 
-      ClientController.products.push(item);
-    } else {
-      console.error("Invalid type");
-    }
+			ClientController.products.push(item);
+		} else {
+			// Handle invalid product type
+			console.error('Invalid type');
+		}
 
-    this.saveProducts(ClientController.products);
-  }
+		// Save updated products array to localStorage
+		this.saveProducts(ClientController.products);
+	}
 
-  static addOTC(name, manufacturer, expiryDate, type, quantity, age, price) {
-    return new OTC(name, manufacturer, expiryDate, type, quantity, age, price);
-  }
+	// Helper to create an OTC product instance
+	static addOTC(name, manufacturer, expiryDate, type, quantity, age, price) {
+		return new OTC(name, manufacturer, expiryDate, type, quantity, age, price);
+	}
 
-  static addPrescription(
-    name,
-    manufacturer,
-    expiryDate,
-    quantity,
-    type,
-    dosage,
-    frequency
-  ) {
-    return new Prescription(
-      name,
-      manufacturer,
-      expiryDate,
-      quantity,
-      type,
-      dosage,
-      frequency
-    );
-  }
+	// Helper to create a Prescription product instance
+	static addPrescription(name, manufacturer, expiryDate, quantity, type, dosage, frequency) {
+		return new Prescription(name, manufacturer, expiryDate, quantity, type, dosage, frequency);
+	}
 
-  static saveProducts(products) {
-    localStorage.setItem("products", JSON.stringify(products));
-  }
+	// Save products array to localStorage
+	static saveProducts(products) {
+		localStorage.setItem('products', JSON.stringify(products));
+	}
 
-  static deleteProducts(id) {
-    ClientController.products = ClientController.products.filter((product) => {
-      return product.id !== id;
-    });
+	// Delete a product by its unique ID
+	static deleteProducts(id) {
+		ClientController.products = ClientController.products.filter((product) => {
+			return product.id !== id;
+		});
 
-    ClientController.saveProducts(ClientController.products);
-  }
+		ClientController.saveProducts(ClientController.products);
+	}
 
-  static editProduct(editedProduct) {
-    const index = ClientController.products.findIndex(
-      (product) => product.id === editedProduct.id
-    );
+	// Edit an existing product by replacing it in the array
+	static editProduct(editedProduct) {
+		const index = ClientController.products.findIndex(
+			(product) => product.id === editedProduct.id
+		);
 
-    if (index !== -1) {
-      ClientController.products[index] = editedProduct;
-    } else {
-      console.error("Product not found");
-    }
+		if (index !== -1) {
+			ClientController.products[index] = editedProduct;
+		} else {
+			// Handle case where product is not found
+			console.error('Product not found');
+		}
 
-    this.saveProducts(ClientController.products);
-  }
+		this.saveProducts(ClientController.products);
+	}
 }
 
 export default ClientController;
